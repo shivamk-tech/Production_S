@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const rideSchema = new mongoose.Schema({
-    rider: {
+
+  rider: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true
@@ -10,6 +11,17 @@ const rideSchema = new mongoose.Schema({
   driver: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    default: null
+  },
+
+  rideType: {
+    type: String,
+    enum: ["for_me", "for_other"],
+    default: "for_me"
+  },
+
+  otherPersonPhone: {
+    type: String,
     default: null
   },
 
@@ -25,6 +37,11 @@ const rideSchema = new mongoose.Schema({
     address: String
   },
 
+  scheduledTime: {
+    type: Date,
+    default: Date.now
+  },
+
   fare: {
     type: Number,
     default: 0
@@ -36,7 +53,7 @@ const rideSchema = new mongoose.Schema({
     default: "pending"
   }
 
-},{timestamps: true})
+}, { timestamps: true })
 
 const rideModel = mongoose.model('Ride', rideSchema);
 
