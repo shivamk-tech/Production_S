@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import clock from '../../assets/clock.svg'
 
 const debounce = (func, delay) => {
   let timeoutId;
@@ -73,8 +74,12 @@ const RideLocation = ({
 
         {/* Pickup */}
         <div className="relative">
+          <div className="absolute top-4 left-4 rounded-full h-4 w-4 border-5 border-black">
+
+          </div>
+
           <input
-            className="bg-[#EFEFEF] px-4 py-3 w-full rounded-lg"
+            className="bg-[#EFEFEF] pl-10 px-4 py-3 w-full rounded-lg"
             placeholder="Pickup Location"
             value={pickupQuery}
             onChange={(e) => setPickupQuery(e.target.value)}
@@ -82,7 +87,7 @@ const RideLocation = ({
           />
 
           {activeField === "pickup" && pickupSuggestions.length > 0 && (
-            <ul className="absolute z-10 w-full bg-white border rounded shadow max-h-48 overflow-y-auto">
+            <ul className="absolute z-10 w-full bg-white border rounded shadow max-h-88 overflow-y-auto">
               {pickupSuggestions.map((s, i) => (
                 <li
                   key={i}
@@ -106,11 +111,11 @@ const RideLocation = ({
 
         {/* Dropoff */}
         <div className="relative">
-          <div className="absolute  h-4 w-4 rounded full border-2 border-black">
+          <div className="absolute top-4 left-4  h-4 w-4 border-5 border-black">
 
           </div>
           <input
-            className="bg-[#EFEFEF] pl-15 px-4 py-3 w-full rounded-lg"
+            className="bg-[#EFEFEF] pl-10 px-4 py-3 w-full rounded-lg"
             placeholder="Dropoff Location"
             value={dropoffQuery}
             onChange={(e) => setDropoffQuery(e.target.value)}
@@ -138,6 +143,13 @@ const RideLocation = ({
               ))}
             </ul>
           )}
+        </div>
+
+        <div>
+          <button className="flex bg-[#EFEFEF] px-4 py-3 w-full rounded-lg item-center gap-2">
+            <div className="w-5"><img className="object-cover h-full w-full" src={clock} alt="" /></div>
+            <span className="font-normal">Pickup now</span>
+            </button>
         </div>
 
         <button
