@@ -7,6 +7,7 @@ const cors = require('cors')
 app.use(express.json())
 app.use(cookieParser())
 app.use('/api/auth', authRoutes)
+app.use('/api/ride', rideRoutes)
 app.use(cors({
     credentials:true
 }
