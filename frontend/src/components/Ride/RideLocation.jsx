@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import clock from '../../assets/clock.svg'
+import { ChevronDown } from "lucide-react";
 
 const debounce = (func, delay) => {
   let timeoutId;
@@ -146,10 +147,23 @@ const RideLocation = ({
         </div>
 
         <div>
-          <button className="flex bg-[#EFEFEF] px-4 py-3 w-full rounded-lg item-center gap-2">
-            <div className="w-5"><img className="object-cover h-full w-full" src={clock} alt="" /></div>
-            <span className="font-normal">Pickup now</span>
-            </button>
+          <button className="flex bg-[#EFEFEF] px-4 py-3 w-full rounded-lg items-center justify-between ">
+            <div className="flex gap-2 items-center">
+              <div className="w-5"><img className="object-cover h-full w-full" src={clock} alt="" /></div>
+              <span className="font-normal">Pickup now</span>
+            </div>
+            <ChevronDown size={15} className="bg-blue-400" strokeWidth={4}/>
+          </button>
+        </div>
+
+        <div>
+          <button className="flex bg-[#EFEFEF] px-4 py-3 w-30 rounded-lg items-center justify-between ">
+            <div className="flex gap-2 items-center">
+              <div className="w-3"><img className="object-cover h-full w-full" src={clock} alt="" /></div>
+              <span className="font-normal text-sm">For me</span>
+            </div>
+            <ChevronDown size={15} strokeWidth={4}/>
+          </button>
         </div>
 
         <button
