@@ -1,21 +1,6 @@
 const mongoose = require('mongoose');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const rideSchema = new mongoose.Schema({
-
   rider: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
