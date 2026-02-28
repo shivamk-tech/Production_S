@@ -75,14 +75,14 @@ const RideYourLocation = () => {
       const distanceInKm = route.summary.totalDistance / 1000;
       const durationInMin = route.summary.totalTime / 60;
 
-      const baseFare = 40;
-      const perKmRate = 10;
-      const estimatedFare = baseFare + distanceInKm * perKmRate;
-
       setFareInfo({
         distance: distanceInKm.toFixed(2),
         duration: durationInMin.toFixed(0),
-        fare: estimatedFare.toFixed(0),
+        fares: {
+          cab: (50 + distanceInKm * 15).toFixed(0),
+          auto: (30 + distanceInKm * 10).toFixed(0),
+          moto: (20 + distanceInKm * 8).toFixed(0),
+        }
       });
     });
 
@@ -151,6 +151,7 @@ const RideYourLocation = () => {
         setPickup={setPickup}
         setDropoff={setDropoff}
         onSearch={handleSearch}
+        fareInfo={fareInfo}
       />
 
       {/* Map */}
@@ -160,11 +161,9 @@ const RideYourLocation = () => {
         {/* Fare Box */}
         {fareInfo && (
           <div className="absolute bottom-4 left-4 bg-white p-4 rounded-xl shadow-lg">
-            <p><strong>Distance:</strong> {fareInfo.distance} km</p>
-            <p><strong>Duration:</strong> {fareInfo.duration} min</p>
-            <p className="text-lg font-semibold">
-              ₹ {fareInfo.fare}
-            </p>
+            <div className="text-sm font-medium text-gray-500">Trip Info</div>
+            <div className="font-bold text-lg">{fareInfo.distance} km</div>
+            <div className="text-sm text-gray-500">{fareInfo.duration} min</div>
           </div>
         )}
       </div>

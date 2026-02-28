@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import clock from '../../assets/clock.svg'
-import { ChevronDown, UserRound, X, Calendar, Clock } from "lucide-react";
+import { ChevronDown, UserRound, X, Calendar, Clock, Car, Bike } from "lucide-react";
 
 const debounce = (func, delay) => {
   let timeoutId;
@@ -19,6 +19,7 @@ const RideLocation = ({
   setPickup,
   setDropoff,
   onSearch,
+  fareInfo,
 }) => {
   const [pickupQuery, setPickupQuery] = useState("");
   const [dropoffQuery, setDropoffQuery] = useState("");
@@ -37,6 +38,7 @@ const RideLocation = ({
     lastName: "",
     phone: "",
   });
+  const [isVehiclePanelOpen, setIsVehiclePanelOpen] = useState(false);
 
   const fetchSuggestions = async (query, setter) => {
     if (query.length < 3) {
@@ -76,13 +78,22 @@ const RideLocation = ({
     e.preventDefault();
     if (pickup && dropoff) {
       onSearch();
+      setIsVehiclePanelOpen(true);
     }
   };
 
   return (
-    <div className="h-100 w-80 border-2 border-gray-100 rounded-2xl flex flex-col gap-4 p-4 bg-white shadow-lg relative">
+    <div className="h-100 w-80 border-2 border-gray-100 rounded-2xl flex flex-col gap-4 p-4 bg-white shadow-lg relative overflow-hidden">
+      <style>
+        {`
+          @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+          }
+        `}
+      </style>
       {isScheduleOpen && (
-        <div className="absolute inset-0 bg-white z-50 rounded-2xl p-4 flex flex-col gap-4">
+        <div className="absolute inset-0 bg-white z-50 rounded-2xl p-4 flex flex-col gap-4" style={{ animation: 'slideUp 0.3s ease-out' }}>
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold">Schedule a Ride</h3>
             <button onClick={() => setIsScheduleOpen(false)} className="p-1 hover:bg-gray-100 rounded-full">
@@ -167,7 +178,7 @@ const RideLocation = ({
       )}
 
       {isRiderModalOpen && (
-        <div className="absolute inset-0 bg-white z-50 rounded-2xl p-4 flex flex-col gap-4">
+        <div className="absolute inset-0 bg-white z-50 rounded-2xl p-4 flex flex-col gap-4" style={{ animation: 'slideUp 0.3s ease-out' }}>
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold">Who's riding?</h3>
             <button onClick={() => setIsRiderModalOpen(false)} className="p-1 hover:bg-gray-100 rounded-full">
@@ -176,7 +187,7 @@ const RideLocation = ({
           </div>
 
           <div
-            className={`p-3 border rounded-xl cursor-pointer flex items-center justify-between ${riderType === 'me' ? 'border-black bg-gray-50' : 'border-gray-200'}`}
+            className={`p-3 border rounded-xl cursor-pointer flex items-center justify-between transition-all duration-200 ${riderType === 'me' ? 'border-black bg-gray-50' : 'border-gray-200'}`}
             onClick={() => setRiderType('me')}
           >
             <div className="flex items-center gap-3">
@@ -187,7 +198,7 @@ const RideLocation = ({
           </div>
 
           <div
-            className={`p-3 border rounded-xl cursor-pointer flex flex-col gap-3 ${riderType === 'other' ? 'border-black bg-gray-50' : 'border-gray-200'}`}
+            className={`p-3 border rounded-xl cursor-pointer flex flex-col gap-3 transition-all duration-200 ${riderType === 'other' ? 'border-black bg-gray-50' : 'border-gray-200'}`}
             onClick={() => setRiderType('other')}
           >
             <div className="flex items-center justify-between w-full">
@@ -233,6 +244,59 @@ const RideLocation = ({
           </button>
         </div>
       )}
+
+      {isVehiclePanelOpen && (
+        <div className="absolute inset-0 bg-white z-50 rounded-2xl p-4 flex flex-col gap-4" style={{ animation: 'slideUp 0.3s ease-out' }}>
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-semibold">Choose a Ride</h3>
+            <button onClick={() => setIsVehiclePanelOpen(false)} className="p-1 hover:bg-gray-100 rounded-full">
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-3 overflow-y-auto flex-1">
+            {/* Cab Option */}
+            <div className="flex items-center justify-between p-3 border border-gray-200 rounded-xl hover:border-black cursor-pointer transition-all">
+              <div className="flex items-center gap-4">
+                <Car size={28} className="text-gray-800" />
+                <div>
+                  <div className="font-bold text-base">Cab</div>
+                  <div className="text-xs text-gray-500">{fareInfo?.distance} km • {fareInfo?.duration} min</div>
+                  <div className="text-xs text-gray-400">Comfy, AC ride</div>
+                </div>
+              </div>
+              <div className="font-bold text-lg">₹{fareInfo?.fares?.cab}</div>
+            </div>
+
+            {/* Auto Option */}
+            <div className="flex items-center justify-between p-3 border border-gray-200 rounded-xl hover:border-black cursor-pointer transition-all">
+              <div className="flex items-center gap-4">
+                <div className="w-7 h-7 flex items-center justify-center font-bold text-gray-800 border-2 border-gray-800 rounded-md text-[10px]">AUTO</div>
+                <div>
+                  <div className="font-bold text-base">Auto</div>
+                  <div className="text-xs text-gray-500">{fareInfo?.distance} km • {fareInfo?.duration} min</div>
+                  <div className="text-xs text-gray-400">Affordable, compact</div>
+                </div>
+              </div>
+              <div className="font-bold text-lg">₹{fareInfo?.fares?.auto}</div>
+            </div>
+
+            {/* Rapido/Moto Option */}
+            <div className="flex items-center justify-between p-3 border border-gray-200 rounded-xl hover:border-black cursor-pointer transition-all">
+              <div className="flex items-center gap-4">
+                <Bike size={28} className="text-gray-800" />
+                <div>
+                  <div className="font-bold text-base">Rapido</div>
+                  <div className="text-xs text-gray-500">{fareInfo?.distance} km • {fareInfo?.duration} min</div>
+                  <div className="text-xs text-gray-400">Fastest, cheapest</div>
+                </div>
+              </div>
+              <div className="font-bold text-lg">₹{fareInfo?.fares?.moto}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="text-[20px] font-semibold">Get a ride</div>
 
       <form onSubmit={SubmitForm} className="flex flex-col gap-4">
