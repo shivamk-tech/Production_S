@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import L from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
@@ -29,7 +29,7 @@ const RideYourLocation = () => {
   const [fareInfo, setFareInfo] = useState(null);
 
   // 🔥 Handle Search Button
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     if (!mapRef.current || !pickup || !dropoff) return;
 
     if (!pickup.lat || !dropoff.lat) {
@@ -89,7 +89,7 @@ const RideYourLocation = () => {
     routingControlRef.current.on("routingerror", function (e) {
       console.error("Routing error:", e);
     });
-  };
+  }, [pickup, dropoff]);
 
   // 🔥 Initialize Map Once
   useEffect(() => {
@@ -135,6 +135,12 @@ const RideYourLocation = () => {
       }).addTo(mapRef.current);
     }
   }, [dropoff]);
+
+  useEffect(() => {
+    if (pickup && dropoff) {
+      handleSearch();
+    }
+  }, [pickup, dropoff, handleSearch]);
 
   return (
     <div className="flex gap-6 w-full">

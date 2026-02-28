@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import clock from '../../assets/clock.svg'
-import { ChevronDown } from "lucide-react";
-import { UserRound } from 'lucide-react';
+import { ChevronDown, UserRound, X, Calendar, Clock } from "lucide-react";
 
 const debounce = (func, delay) => {
   let timeoutId;
@@ -26,6 +25,18 @@ const RideLocation = ({
   const [pickupSuggestions, setPickupSuggestions] = useState([]);
   const [dropoffSuggestions, setDropoffSuggestions] = useState([]);
   const [activeField, setActiveField] = useState(null);
+  const [isScheduleOpen, setIsScheduleOpen] = useState(false);
+  const [scheduleDate, setScheduleDate] = useState(new Date().toISOString().split('T')[0]);
+  const [scheduleTime, setScheduleTime] = useState(new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
+  const dateInputRef = useRef(null);
+  const timeInputRef = useRef(null);
+  const [isRiderModalOpen, setIsRiderModalOpen] = useState(false);
+  const [riderType, setRiderType] = useState("me");
+  const [otherRiderDetails, setOtherRiderDetails] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+  });
 
   const fetchSuggestions = async (query, setter) => {
     if (query.length < 3) {
@@ -69,7 +80,159 @@ const RideLocation = ({
   };
 
   return (
-    <div className="h-100 w-80 border-2 border-gray-100 rounded-2xl flex flex-col gap-4 p-4 bg-white shadow-lg">
+    <div className="h-100 w-80 border-2 border-gray-100 rounded-2xl flex flex-col gap-4 p-4 bg-white shadow-lg relative">
+      {isScheduleOpen && (
+        <div className="absolute inset-0 bg-white z-50 rounded-2xl p-4 flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-semibold">Schedule a Ride</h3>
+            <button onClick={() => setIsScheduleOpen(false)} className="p-1 hover:bg-gray-100 rounded-full">
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="text-base font-medium">When do you want to be picked up?</div>
+
+          <div className="flex gap-3">
+            <div className="flex-1 flex flex-col gap-1 min-w-0">
+              <label className="text-xs text-gray-500 font-medium">Date</label>
+              <div
+                className="relative flex items-center bg-gray-100 rounded-lg p-2 focus-within:ring-2 focus-within:ring-black transition-all cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  dateInputRef.current?.showPicker();
+                }}
+              >
+                <Calendar size={18} className="text-gray-500 mr-2 shrink-0" />
+                <input
+                  ref={dateInputRef}
+                  type="date"
+                  value={scheduleDate}
+                  onChange={(e) => setScheduleDate(e.target.value)}
+                  className="bg-transparent text-sm outline-none flex-1 cursor-pointer font-medium"
+                  onClick={(e) => e.preventDefault()}
+                />
+              </div>
+            </div>
+            <div className="flex-1 flex flex-col gap-1 min-w-0">
+              <label className="text-xs text-gray-500 font-medium">Time</label>
+              <div
+                className="relative flex items-center bg-gray-100 rounded-lg p-2 focus-within:ring-2 focus-within:ring-black transition-all cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  timeInputRef.current?.showPicker();
+                }}
+              >
+                <Clock size={18} className="text-gray-500 mr-2 shrink-0" />
+                <input
+                  ref={timeInputRef}
+                  type="time"
+                  value={scheduleTime}
+                  onChange={(e) => setScheduleTime(e.target.value)}
+                  className="bg-transparent text-sm outline-none flex-1 cursor-pointer font-medium"
+                  onClick={(e) => e.preventDefault()}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="p-3 border border-gray-200 rounded-xl">
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 bg-black rounded-full" />
+                <div className="flex flex-col overflow-hidden">
+                  <span className="text-sm font-medium">Pickup at</span>
+                  <span className="text-xs text-gray-500 truncate">{pickup?.name || "Current location"}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-3 border border-gray-200 rounded-xl">
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 bg-black rounded-full" />
+                <div className="flex flex-col overflow-hidden">
+                  <span className="text-sm font-medium">Drop off at</span>
+                  <span className="text-xs text-gray-500 truncate">{dropoff?.name || "Destination"}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setIsScheduleOpen(false)}
+            className="mt-auto w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors shadow-md"
+          >
+            Confirm Schedule
+          </button>
+        </div>
+      )}
+
+      {isRiderModalOpen && (
+        <div className="absolute inset-0 bg-white z-50 rounded-2xl p-4 flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-semibold">Who's riding?</h3>
+            <button onClick={() => setIsRiderModalOpen(false)} className="p-1 hover:bg-gray-100 rounded-full">
+              <X size={20} />
+            </button>
+          </div>
+
+          <div
+            className={`p-3 border rounded-xl cursor-pointer flex items-center justify-between ${riderType === 'me' ? 'border-black bg-gray-50' : 'border-gray-200'}`}
+            onClick={() => setRiderType('me')}
+          >
+            <div className="flex items-center gap-3">
+              <UserRound size={20} />
+              <span className="font-medium">For me</span>
+            </div>
+            {riderType === 'me' && <div className="w-2 h-2 bg-black rounded-full" />}
+          </div>
+
+          <div
+            className={`p-3 border rounded-xl cursor-pointer flex flex-col gap-3 ${riderType === 'other' ? 'border-black bg-gray-50' : 'border-gray-200'}`}
+            onClick={() => setRiderType('other')}
+          >
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-3">
+                <UserRound size={20} />
+                <span className="font-medium">For someone else</span>
+              </div>
+              {riderType === 'other' && <div className="w-2 h-2 bg-black rounded-full" />}
+            </div>
+
+            {riderType === 'other' && (
+              <div className="flex flex-col gap-3 w-full mt-2" onClick={(e) => e.stopPropagation()}>
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  value={otherRiderDetails.firstName}
+                  onChange={(e) => setOtherRiderDetails({ ...otherRiderDetails, firstName: e.target.value })}
+                  className="bg-gray-100 p-2 rounded-lg text-sm outline-none w-full"
+                />
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  value={otherRiderDetails.lastName}
+                  onChange={(e) => setOtherRiderDetails({ ...otherRiderDetails, lastName: e.target.value })}
+                  className="bg-gray-100 p-2 rounded-lg text-sm outline-none w-full"
+                />
+                <input
+                  type="tel"
+                  placeholder="Phone number"
+                  value={otherRiderDetails.phone}
+                  onChange={(e) => setOtherRiderDetails({ ...otherRiderDetails, phone: e.target.value })}
+                  className="bg-gray-100 p-2 rounded-lg text-sm outline-none w-full"
+                />
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={() => setIsRiderModalOpen(false)}
+            className="mt-auto w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors shadow-md"
+          >
+            Done
+          </button>
+        </div>
+      )}
       <div className="text-[20px] font-semibold">Get a ride</div>
 
       <form onSubmit={SubmitForm} className="flex flex-col gap-4">
@@ -148,7 +311,11 @@ const RideLocation = ({
         </div>
 
         <div>
-          <button className="flex bg-[#EFEFEF] px-4 py-3 w-full rounded-lg items-center justify-between ">
+          <button
+            type="button"
+            onClick={() => setIsScheduleOpen(true)}
+            className="flex bg-[#EFEFEF] px-4 py-3 w-full rounded-lg items-center justify-between "
+          >
             <div className="flex gap-2 items-center">
               <div className="w-5"><img className="object-cover h-full w-full" src={clock} alt="" /></div>
               <span className="font-normal">Pickup now</span>
@@ -158,10 +325,16 @@ const RideLocation = ({
         </div>
 
         <div>
-          <button className="flex bg-[#EFEFEF] px-4 py-3 w-30 rounded-full items-center justify-between ">
+          <button
+            type="button"
+            onClick={() => setIsRiderModalOpen(true)}
+            className="flex bg-[#EFEFEF] px-4 py-3 w-30 rounded-full items-center justify-between "
+          >
             <div className="flex gap-2 items-center">
               <UserRound size={15} strokeWidth={4}/>
-              <span className="font-normal text-sm">For me</span>
+              <span className="font-normal text-sm truncate max-w-[80px]">
+                {riderType === 'me' ? 'For me' : (otherRiderDetails.firstName || 'Other')}
+              </span>
             </div>
             <ChevronDown size={15} strokeWidth={4}/>
           </button>
