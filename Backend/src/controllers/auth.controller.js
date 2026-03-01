@@ -431,7 +431,12 @@ async function registerPassword(req, res) {
       { expiresIn: "7d" }
     )
 
-    res.cookie("token", token)
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    })
 
     // Send welcome email
     await sendEmail(
@@ -799,9 +804,9 @@ async function sendLoginOtp(req, res) {
       `
     )
 
-    res.status(200).json({ 
+    res.status(200).json({
       message: "OTP sent successfully",
-      tempToken 
+      tempToken
     })
 
   } catch (err) {
@@ -843,7 +848,13 @@ async function verifyLoginOtp(req, res) {
       { expiresIn: "7d" }
     )
 
-    res.cookie("token", token)
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    })
+    
     await otpModel.deleteOne({ email: otpDoc.email })
 
     res.status(200).json({ message: "Login successful" })

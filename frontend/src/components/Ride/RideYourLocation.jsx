@@ -81,7 +81,7 @@ const RideYourLocation = () => {
         fares: {
           cab: (50 + distanceInKm * 15).toFixed(0),
           auto: (30 + distanceInKm * 10).toFixed(0),
-          moto: (20 + distanceInKm * 8).toFixed(0),
+          moto: (distanceInKm < 4 ? 30 : distanceInKm * 8).toFixed(0),
         }
       });
     });

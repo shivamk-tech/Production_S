@@ -4,6 +4,7 @@ const socketIO = require('socket.io')
 
 const app = require('./src/app')
 const connectDB = require('./src/db/db')
+const cookieParser = require('cookie-parser')
 
 connectDB()
 
@@ -14,6 +15,7 @@ const io = socketIO(server, {
         origin: "*"
     }
 })
+app.use(cookieParser())
 
 // SOCKET LOGIC 
 io.on("connection", (socket) => {
