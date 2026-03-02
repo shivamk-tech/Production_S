@@ -4,7 +4,6 @@ import apple from '../../assets/apple.png';
 import { QrCode, ArrowLeft, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 
-
 const LoginForm = () => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [page, setPage] = useState(1);
