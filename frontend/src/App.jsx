@@ -7,6 +7,7 @@ import BusinessMain from "./components/Business/BusinessMain";
 import ReqRideMain from "./components/ReqRide/ReqRideMain";
 import AirportMain from "./components/Airport/AirportMain";
 import SeeMain from "./components/SeeTerms/SeeMain";
+import LoginMain from "./components/Login_SignUp/LoginMain";
 
 const App = () => {
  
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/airport" element={<AirportMain/>}/>
         <Route path="/learnmore" element={<LearnMoreMain/>}/>
         <Route path="/see" element={<SeeMain/>}/>
+        <Route path='/login' element={<LoginMain/>}/>
       </Routes>
     </div>
   );

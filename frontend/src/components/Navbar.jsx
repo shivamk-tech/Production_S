@@ -57,7 +57,6 @@ const Navbar = () => {
               </a>
               <a href="" className="block px-4 py-2 text-gray-500 hover:bg-gray-100 font-light">
                 How Uber works
-
               </a>
               <a href="" className="block px-4 py-2 text-gray-500 hover:bg-gray-100 font-light">
                 Sustainability

@@ -1,10 +1,9 @@
 import React from 'react'
 import { Globe } from 'lucide-react';
-
-
-
+import { useNavigate } from "react-router-dom";
 
 const RightNav = () => {
+    const navigate = useNavigate()
     return (
         <div>
             <ul className="flex items-center lg:gap-6 gap-3 text-sm font-medium text-white">
@@ -27,7 +26,7 @@ const RightNav = () => {
                 </li>
 
                 <li>
-                    <button className="bg-white text-black rounded-full px-3 py-2  lg:px-4 lg:py-2 lg:text-sm">
+                    <button onClick={()=>{navigate('/login')}} className="bg-white text-black rounded-full px-3 py-2  lg:px-4 lg:py-2 lg:text-sm hover:cursor-pointer hover:bg-gray-200">
                         Sign up
                     </button>
                 </li>

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import google from '../../assets/google.png';
 import apple from '../../assets/apple.png';
-import { QrCode, ArrowLeft, ArrowRight } from 'lucide-react';
+import { QrCode, ArrowLeft, ArrowRight, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
 import axios from 'axios';
 
 const LoginForm = () => {
@@ -13,6 +13,8 @@ const LoginForm = () => {
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [tempToken, settempToken] = useState(null)
   const otpInputs = useRef([]);
   const [Error, setError] = useState("")
@@ -370,6 +372,9 @@ const LoginForm = () => {
                 />
                 <label htmlFor='agree' className='text-base font-medium cursor-pointer'>I Agree</label>
               </div>
+
+              {Error && <span className="mt-3 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700">{Error}</span>}
+
             </div>
             <div className='flex justify-between items-center w-full mt-4'>
               <button
@@ -392,20 +397,31 @@ const LoginForm = () => {
               <div className='text-2xl'>Choose a password</div>
               <form className='flex flex-col gap-3'>
                 <div className='flex flex-col gap-3'>
-                  <input
-                    value={password}
-                    className='w-full bg-[#F3F3F3] border-2 rounded-[7px] px-4 py-3 focus:border-black border-transparent focus:outline-none box-border'
-                    type='password'
-                    placeholder='Password'
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <input
-                    value={confirmPassword}
-                    className='w-full bg-[#F3F3F3] border-2 rounded-[7px] px-4 py-3 focus:border-black border-transparent focus:outline-none box-border'
-                    type='password'
-                    placeholder='Confirm Password'
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
+                  <div className='relative w-full'>
+                    <input
+                      value={password}
+                      className='w-full bg-[#F3F3F3] border-2 rounded-[7px] px-4 py-3 pr-10 focus:border-black border-transparent focus:outline-none box-border'
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder='Password'
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <div className='absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5'>
+                      <button type='button' onClick={() => setShowPassword(!showPassword)} className='text-gray-500 focus:outline-none'>
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                      </button>
+                    </div>
+                  </div>
+                  <div className='relative w-full'>
+                    <input
+                      value={confirmPassword}
+                      className='w-full bg-[#F3F3F3] border-2 rounded-[7px] px-4 py-3 pr-10 focus:border-black border-transparent focus:outline-none box-border'
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      placeholder='Confirm Password'
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+        
+                  </div>
+                  {Error && <span className="mt-3 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700">{Error}</span>}
                 </div>
               </form>
             </div>
@@ -416,12 +432,30 @@ const LoginForm = () => {
               >
                 <ArrowLeft size={20} />
               </button>
-              <button className='flex items-center gap-2 bg-black text-white px-6 py-3 rounded-full font-medium hover:opacity-85 cursor-pointer'>
+               <button type='submit' onClick={pageFiveNext} disabled={nextLoading} className={`flex items-center gap-2 bg-black text-white px-6 py-3 rounded-full font-medium hover:opacity-85 cursor-pointer ${nextLoading ? "bg-gray-400 cursor-not-allowed" : ""}`}>
                 Done
               </button>
             </div>
           </div>
         </div>
+
+        {/* Page 6 (Welcome) */}
+        <div className='w-full flex-shrink-0 flex items-center justify-center h-full'>
+          <div className='h-100 w-82'>
+            <div className='flex flex-col gap-4 items-center text-center'>
+              <CheckCircle2 size={48} className="text-green-500" />
+              <div className='text-2xl font-medium'>Welcome to the family, {firstName}!</div>
+              <p className='text-[#5E5E5E]'>You're all set. Let's get you to your destination.</p>
+              <a
+                href="/"
+                className='mt-4 bg-black py-3 text-white rounded-[7px] w-full font-medium hover:opacity-85 cursor-pointer transition-all duration-300 no-underline'
+              >
+                Go to Home
+              </a>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       {/* Resend OTP Modal */}
