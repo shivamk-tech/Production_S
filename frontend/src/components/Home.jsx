@@ -26,12 +26,14 @@ import BusinessMain from './Business/BusinessMain'
 import AboutMain from './AboutUs/AboutMain'
 import LoginMain from "./Login_SignUp/LoginMain";
 import OffMain from "./Offerings/OffMain";
+import AlreadyMain from "./Login_SignUp/AlreadyMain";
 
 
 const Home = () => {
   return (
     <div className="overflow-x-hidden">
-      <Navbar />
+      <AlreadyMain/>
+      {/* <Navbar />
       <SubNav />
       <Container />
       <Buisness />
@@ -39,7 +41,7 @@ const Home = () => {
       <SeePrices />
       <DoMore />
       <PromoDetails />
-      <Footer />
+      <Footer /> */}
     </div>
   );
 };
