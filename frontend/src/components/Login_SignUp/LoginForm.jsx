@@ -22,7 +22,7 @@ const LoginForm = () => {
   const [timer, setTimer] = useState(0);
   const [nextLoading, setnextLoading] = useState(false);
   const [Varified, setVarified] = useState(false)
-  const [termsAccepted, serTermsAccepted] = useState('')
+  const [termsAccepted, serTermsAccepted] = useState(false)
 
   useEffect(() => {
     if (timer === 0) return;
@@ -319,7 +319,13 @@ const LoginForm = () => {
               </div>
               <div className='h-[1px] w-full bg-gray-500'></div>
               <div className='flex items-center gap-2'>
-                <input type='checkbox' id='agree' className='w-5 h-5 accent-black cursor-pointer' />
+                <input 
+                checked = {termsAccepted}
+                onChange={(e)=>{setTermsAccepted(e.target.checked)}}
+                type='checkbox' 
+                id='agree' 
+                className='w-5 h-5 accent-black cursor-pointer' 
+                />
                 <label htmlFor='agree' className='text-base font-medium cursor-pointer'>I Agree</label>
               </div>
             </div>
