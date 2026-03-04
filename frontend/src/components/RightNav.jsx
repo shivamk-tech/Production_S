@@ -20,13 +20,13 @@ const RightNav = () => {
                 </li>
 
                 <li className='rounded-full'>
-                    <a href="" className="text-white text-sm">
+                    <a href="/login" target="_self" className="text-white text-sm hover:bg-white/10 rounded-full px-3 py-2">
                         Log in
                     </a>
                 </li>
 
                 <li>
-                    <button onClick={()=>{navigate('/login')}} className="bg-white text-black rounded-full px-3 py-2  lg:px-4 lg:py-2 lg:text-sm hover:cursor-pointer hover:bg-gray-200">
+                    <button onClick={()=>{navigate('/signup')}} className="bg-white text-black rounded-full px-3 py-2  lg:px-4 lg:py-2 lg:text-sm hover:cursor-pointer hover:bg-gray-200">
                         Sign up
                     </button>
                 </li>

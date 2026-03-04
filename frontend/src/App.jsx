@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import "./App.css"; // Make sure this path points to your main CSS file
+import "./App.css"; // Make sure this path points to main CSS file
 import Home from "./components/Home";
 import RideMap from "./components/Ride/RideMap";
 import LearnMoreMain from "./components/LearnMore/LearnMoreMain";
@@ -8,6 +8,7 @@ import ReqRideMain from "./components/ReqRide/ReqRideMain";
 import AirportMain from "./components/Airport/AirportMain";
 import SeeMain from "./components/SeeTerms/SeeMain";
 import LoginMain from "./components/Login_SignUp/LoginMain";
+import AlreadyMain from "./components/Login_SignUp/AlreadyMain";
 
 const App = () => {
  
@@ -21,7 +22,8 @@ const App = () => {
         <Route path="/airport" element={<AirportMain/>}/>
         <Route path="/learnmore" element={<LearnMoreMain/>}/>
         <Route path="/see" element={<SeeMain/>}/>
-        <Route path='/login' element={<LoginMain/>}/>
+        <Route path='/signup' element={<LoginMain/>}/>
+        <Route path='/login' element={<AlreadyMain/>}/>
       </Routes>
     </div>
   );

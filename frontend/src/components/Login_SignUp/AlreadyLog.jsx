@@ -6,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 
 const AlreadyLog = () => {
     const [email, setEmail] = useState('');
-    const [error, setError] = useState('');
+    const [Error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [tempToken, settempToken] = useState(null);
     const [timer, setTimer] = useState(0);
     const [Otp, setOtp] = useState('');
-    const [otpDigits, setOtpDigits] = useState(['', '', '', '','','']);
+    const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
     const otpInputs = useRef([]);
     const navigate = useNavigate()
 
@@ -81,11 +81,12 @@ const AlreadyLog = () => {
         try {
             const res = await axios.post(
                 "http://localhost:3003/api/auth/verify-login-otp",
-                { , otp: Otp },
+                { tempToken, otp: Otp },
                 { withCredentials: true }
             )
             // Assuming successful login returns necessary data or sets cookies
             navigate('/')
+            console.log(res.data.message)
         }
         catch (err) {
             setError(handleError(err))
@@ -209,13 +210,13 @@ const AlreadyLog = () => {
                                 Privacy Policy
                             </a>.
                         </p>
-                        {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
+                        {Error && <p className="text-red-500 text-sm mt-4">{Error}</p>}
                     </div>
                 </div>
 
                 {/* Page 2: OTP Verification */}
                 <div className={`w-full flex-shrink-0 flex flex-col items-center justify-center px-5 sm:px-6 transition-opacity duration-500 ${page === 2 ? 'opacity-100' : 'opacity-0'}`}>
-                    <div className="w-full max-w-md flex flex-col items-center pt-8 pb-16">
+                    <div className="w-full max-w-md flex flex-col gap-2 items-center pt-8 pb-16">
                         <h2 className="text-3xl sm:text-4xl font-bold text-center text-black mb-3">
                             Enter the 4-digit code
                         </h2>
@@ -223,7 +224,7 @@ const AlreadyLog = () => {
                             Sent to {email}
                         </p>
 
-                        <div className="flex gap-2 mb-6">
+                        <div className="flex gap-2 ">
                             {otpDigits.map((digit, index) => (
                                 <input
                                     key={index}
@@ -237,6 +238,8 @@ const AlreadyLog = () => {
                                 />
                             ))}
                         </div>
+
+                        {Error && <span className=" rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700">{Error}</span>}
 
                         <button
                             onClick={handleVerifyOtp}

@@ -32,8 +32,7 @@ import AlreadyMain from "./Login_SignUp/AlreadyMain";
 const Home = () => {
   return (
     <div className="overflow-x-hidden">
-      <AlreadyMain/>
-      {/* <Navbar />
+      <Navbar />
       <SubNav />
       <Container />
       <Buisness />
@@ -41,7 +40,7 @@ const Home = () => {
       <SeePrices />
       <DoMore />
       <PromoDetails />
-      <Footer /> */}
+      <Footer />
     </div>
   );
 };
