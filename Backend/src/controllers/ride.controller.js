@@ -2,6 +2,8 @@ const rideModel = require('../models/rideForUser.model')
 
 
 
+
+
 async function createRide(req, res) {
     try {
 
