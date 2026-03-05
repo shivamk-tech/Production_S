@@ -2,12 +2,18 @@ import React from 'react'
 import wlogo from '../../assets/wlogo.png'
 import car from '../../assets/car.png'
 import key from '../../assets/key.png'
+import { useAuth } from '../../context/AuthContext'
 import eat from '../../assets/eat.png'
 
 const RideMapNav = () => {
-  return (
+
+  const { user } = useAuth();
+
+
+  if(user){
+    return (
     <div className='h-16 border-b-4 border-gray-200 fixed left-0 top-0 z-100000 w-full overflow-hidden flex items-center px-16 justify-between bg-white'>
-      {/* Right section */}
+      {/* left section */}
       <div className='flex items-center gap-20'>
         <div className='h-20 w-25'>
           <img className='object-cover h-full w-full' src={wlogo} alt="" />
@@ -33,7 +39,47 @@ const RideMapNav = () => {
           </div>
         </div>
       </div>
+      {/* right section */}
+      <div>
+        <div className='flex gap-2'>
+          <button className='flex gap-1 py-2 px-3 rounded-full items-center bg-black text-white cursor-pointer text-sm font-medium'>
+            {user.firstName}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+  }
+
+  return (
+    <div className='h-16 border-b-4 border-gray-200 fixed left-0 top-0 z-100000 w-full overflow-hidden flex items-center px-16 justify-between bg-white'>
       {/* left section */}
+      <div className='flex items-center gap-20'>
+        <div className='h-20 w-25'>
+          <img className='object-cover h-full w-full' src={wlogo} alt="" />
+        </div>
+        <div className='pt-3 flex gap-3'>
+          <div className='flex items-center'>
+            <div className='w-10'><img className='object-cover w-full h-full' src={car} alt="" /></div>
+            <span className='text-sm font-medium'>
+              Ride
+            </span>
+          </div>
+          <div className='flex items-center'>
+            <div className='w-10'><img className='object-cover w-full h-full' src={key} alt="" /></div>
+            <span className='text-sm font-medium'>
+              Rent
+            </span>
+          </div>
+          <div className='flex items-center'>
+            <div className='w-10'><img className='object-cover w-full h-full' src={eat} alt="" /></div>
+            <span className='text-sm font-medium'>
+              Eat
+            </span>
+          </div>
+        </div>
+      </div>
+      {/* right section */}
       <div>
         <div className='flex gap-2'>
           <button className='flex gap-2 py-1 px-2 hover:bg-gray-200 rounded-full items-center cursor-pointer'>
