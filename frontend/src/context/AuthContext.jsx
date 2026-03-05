@@ -7,6 +7,14 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  const logout = () => {
+    axios.get("http://localhost:3003/api/auth/logout", { withCredentials: true })
+      .then(() => {
+        setUser(null)
+      })
+      .catch((err) => console.error("Logout failed", err))
+  }
+
   useEffect(() => {
     axios.get("http://localhost:3003/api/auth/me", { withCredentials: true })
       .then(res => {
@@ -22,7 +30,7 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, logout }}>
       {children}
     </AuthContext.Provider>
   )
