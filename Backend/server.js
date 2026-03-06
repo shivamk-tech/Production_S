@@ -16,14 +16,33 @@ const io = socketIO(server, {
 
 // SOCKET LOGIC
 io.on("connection", (socket) => {
+
   console.log("User connected:", socket.id)
 
-  socket.on("send-location", (data) => {
-    io.emit("receive-location", { id: socket.id, ...data })
+  // join ride room
+  socket.on("join-ride", (rideId) => {
+    socket.join(`ride_${rideId}`)
+    console.log(`User joined ride_${rideId}`)
+  })
+
+  // driver sends location
+  socket.on("driver-location", ({ rideId, lat, lng }) => {
+    socket.to(`ride_${rideId}`).emit("driver-location-update", {
+      lat,
+      lng
+    })
+  })
+
+  // rider sends location
+  socket.on("rider-location", ({ rideId, lat, lng }) => {
+    socket.to(`ride_${rideId}`).emit("rider-location-update", {
+      lat,
+      lng
+    })
   })
 
   socket.on("disconnect", () => {
-    io.emit("user-disconnected", socket.id)
+    console.log("User disconnected:", socket.id)
   })
 })
 

@@ -4,7 +4,7 @@ async function createRide(req, res) {
     try {
 
         const riderId = req.user.id
-        const { pickup, drop, vehicleType, rideType = "for_me", otherRider, scheduledTime } = req.body
+        const { pickup, drop, vehicleType, rideType = "for_me", otherRider, scheduledTime, distance } = req.body
 
         if (!pickup || !drop) {
             return res.status(400).json({
@@ -59,10 +59,11 @@ async function createRide(req, res) {
             })
         }
 
-        await rideModel.create({
+        const ride = await rideModel.create({
             rider: riderId,
             pickup,
             drop,
+            distance,
             vehicleType,
             rideType,
             otherRider: rideType === "for_other" ? otherRider : null,
@@ -75,7 +76,8 @@ async function createRide(req, res) {
         })
 
         res.status(201).json({
-            message: "Ride created successfully"
+            message: "Ride created successfully",
+            ride
         })
 
 
@@ -178,48 +180,62 @@ async function startRide(req, res) {
 }
 
 async function completeRide(req, res) {
-  try {
+    try {
 
-    const driverId = req.user.id
-    const { rideId } = req.params
+        const driverId = req.user.id
+        const { rideId } = req.params
 
-    if (!req.user.roles.includes("driver")) {
-      return res.status(403).json({
-        message: "Only drivers can complete rides"
-      })
+        if (!req.user.roles.includes("driver")) {
+            return res.status(403).json({
+                message: "Only drivers can complete rides"
+            })
+        }
+
+        const ride = await rideModel.findOne({
+            _id: rideId,
+            driver: driverId,
+            status: "started"
+        })
+
+        if (!ride) {
+            return res.status(400).json({
+                message: "Ride cannot be completed"
+            })
+        }
+
+        const finalFare = ride.fare.estimated
+
+        ride.status = "completed"
+        ride.completedAt = new Date()
+        ride.fare.final = finalFare
+
+        await ride.save()
+
+        res.status(200).json({
+            message: "Ride completed successfully",
+            ride
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
     }
-
-    const ride = await rideModel.findOne({
-      _id: rideId,
-      driver: driverId,
-      status: "started"
-    })
-
-    if (!ride) {
-      return res.status(400).json({
-        message: "Ride cannot be completed"
-      })
-    }
-
-    const finalFare = ride.fare.estimated
-
-    ride.status = "completed"
-    ride.completedAt = new Date()
-    ride.fare.final = finalFare
-
-    await ride.save()
-
-    res.status(200).json({
-      message: "Ride completed successfully",
-      ride
-    })
-
-  } catch (err) {
-    res.status(500).json({
-      message: err.message
-    })
-  }
 }
+
+async function getPendingRides(req, res) {
+    try {
+        const rides = await rideModel.find({ status: "pending" })
+        res.status(200).json({message:"Pending Rides" , rides})
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
+
+
 
 
 
@@ -230,6 +246,7 @@ module.exports = {
     acceptRide,
     startRide,
     completeRide,
-    
+    getPendingRides
+
 
 }

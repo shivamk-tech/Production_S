@@ -7,6 +7,7 @@ router.post('/create-rides',authMiddleware,rideController.createRide)
 router.patch("/:rideId/accept", authMiddleware, rideController.acceptRide)
 router.patch("/:ride/start", authMiddleware, rideController.startRide)
 router.patch("/:ride/completed", authMiddleware, rideController.completeRide)
+router.get("/pending-rides", authMiddleware, rideController.getPendingRides)
 
 
 module.exports = router;

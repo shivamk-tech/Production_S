@@ -19,11 +19,10 @@ const rideSchema = new mongoose.Schema({
     default: "for_me"
   },
 
-  otherPersonPhone: {
-    type: String,
-    required: function () {
-      return this.rideType === "for_other"
-    }
+  otherRider: {
+    firstName: String,
+    lastName: String,
+    phone: String,
   },
 
   pickup: {
@@ -54,6 +53,16 @@ const rideSchema = new mongoose.Schema({
         required: true
       }
     }
+  },
+
+  vehicleType: {
+    type: String,
+    required: true
+  },
+
+  distance: {
+    type: Number,
+    default: 0
   },
 
   scheduledTime: {
