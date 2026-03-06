@@ -16,6 +16,7 @@ const RideMain = () => {
 
 
   
+
   useEffect(() => {
 
     const fetchRides = async () => {
