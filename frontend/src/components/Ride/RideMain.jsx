@@ -9,23 +9,6 @@ import socket from "../../socket/socket"
 import { Navigate } from 'react-router-dom'
 import DriversRideDashboard from '../DriversRideDashboard'
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const RideMain = () => {
 
   const { user } = useAuth();
