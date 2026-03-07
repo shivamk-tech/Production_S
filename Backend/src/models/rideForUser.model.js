@@ -40,6 +40,11 @@ const rideSchema = new mongoose.Schema({
     }
   },
 
+  isRideActive:{
+    type:Boolean,
+    default:false
+  },
+
   drop: {
     address: String,
     location: {

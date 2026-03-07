@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     axios.get("http://localhost:3003/api/auth/me", { withCredentials: true })
       .then(res => {
-        console.log("API Response from /me:", res.data);
         setUser(res.data.user || res.data)
       })
       .catch(() => {

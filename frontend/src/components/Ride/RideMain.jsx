@@ -6,46 +6,33 @@ import { MapPin } from 'lucide-react'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import socket from "../../socket/socket"
+import { Navigate } from 'react-router-dom'
+import DriversRideDashboard from '../DriversRideDashboard'
+
+
 
 const RideMain = () => {
 
   const { user } = useAuth();
   const [rides, setRides] = useState([])
-  const [rideId, setRideId] = useState(null)
-
-
-
-
-
-  
-
-
-
-
+  const [isActiveRide, setIsActiveRide] = useState(false)
+  const [activeRide, setActiveRide] = useState(null)
 
 
   useEffect(() => {
-
     const fetchRides = async () => {
-
       const res = await axios.get(
         "http://localhost:3003/api/ride/pending-rides",
         { withCredentials: true }
       )
-
       setRides(res.data.rides)
-      setRideId(res.data.rides._id)
-      console.log(res.data.rides._id)
-
     }
-
     fetchRides()
-
   }, [])
 
 
 
-  const handleAcceptRide = async () => {
+  const handleAcceptRide = async (rideId) => {
 
   try {
 
@@ -58,19 +45,23 @@ const RideMain = () => {
     const ride = res.data.ride
 
     console.log("Ride accepted:", ride)
+    setActiveRide(ride)
 
     // join socket room
     socket.emit("join-ride", ride._id)
-
-    setActiveRide(ride)
-
+    console.log(res.data.ride.isActiveRide)
   } catch (err) {
     console.log(err.response?.data || err.message)
   }
 
 }
+console.log(isActiveRide)
 
   if (user?.roles?.[0] == "driver") {
+    if (activeRide) {
+      return <DriversRideDashboard ride={rides} setActiveRide={setActiveRide} />
+    }
+
     return (
       <div className='pt-10 px-5 lg:px-20 w-full h-full flex flex-col gap-8'>
         <h1 className='text-3xl font-bold'>Available Rides</h1>
@@ -99,7 +90,7 @@ const RideMain = () => {
               </div>
               <div className='text-sm text-gray-500 mt-2'>Distance: {ride.distance} km</div>
               <div className='flex gap-3 mt-2'>
-                <button onClick={handleAcceptRide} className='flex-1 bg-black text-white py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors cursor-pointer'>Accept</button>
+                <button onClick={() => handleAcceptRide(ride._id)} className='flex-1 bg-black text-white py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors cursor-pointer'>Accept</button>
                 <button className='flex-1 bg-gray-100 text-black py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors cursor-pointer'>Decline</button>
               </div>
             </div>

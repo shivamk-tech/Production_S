@@ -105,12 +105,14 @@ async function acceptRide(req, res) {
         const ride = await rideModel.findOneAndUpdate(
             {
                 _id: rideId,
-                status: "pending"
+                status: "pending",
+                isRideActive: false
             },
             {
                 $set: {
                     driver: driverId,
-                    status: "accepted"
+                    status: "accepted",
+                    isRideActive: true
                 }
             },
             { new: true }
@@ -226,7 +228,7 @@ async function completeRide(req, res) {
 async function getPendingRides(req, res) {
     try {
         const rides = await rideModel.find({ status: "pending" })
-        res.status(200).json({message:"Pending Rides" , rides})
+        res.status(200).json({ message: "Pending Rides", rides })
 
     } catch (err) {
         res.status(500).json({
@@ -235,6 +237,26 @@ async function getPendingRides(req, res) {
     }
 }
 
+async function getAcceptedRidesOfDriver(req, res) {
+    try {
+        const driverId = req.user.id
+        const ride = await rideModel.find(driverId)
+        if (ride) {
+            return res.status(401).json({
+                message: "No accepted rides found"
+            })
+        }
+        res.status(200).json({
+            message: "successfully finded the active rides",
+            ride
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
 
 
 
