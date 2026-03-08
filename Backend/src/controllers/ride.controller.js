@@ -245,6 +245,24 @@ async function getAcceptedRidesOfDriverAndRiderInfo(req, res) {
         if (!ride) {
             return res.status(401).json({
                 message: "No active rides found"
+        const userId = req.user.id
+        let ride;
+
+        if (req.user.roles.includes("driver")) {
+            ride = await rideModel.find({ driver: userId, status: { $in: ["accepted", "started"] } }).populate('rider');
+        } else {
+            const activeRide = await rideModel.findOne({
+                rider: userId,
+                status: { $in: ["pending", "accepted", "started"] }
+            }).populate('driver');
+
+            ride = activeRide ? [activeRide] : [];
+        }
+
+        if (!ride || ride.length === 0) {
+            return res.status(200).json({
+                message: "No active rides found",
+                ride: []
             })
         }
         res.status(200).json({
