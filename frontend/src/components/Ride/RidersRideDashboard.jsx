@@ -21,6 +21,7 @@ const dropoffIcon = L.icon({
 const RidersRideDashboard = ({ ride }) => {
   const mapRef = useRef(null);
   const routingControlRef = useRef(null);
+  console.log(ride)
 
   useEffect(() => {
     if (!ride || !ride.pickup || !ride.drop) return;

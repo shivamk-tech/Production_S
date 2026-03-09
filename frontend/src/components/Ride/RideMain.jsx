@@ -10,34 +10,13 @@ import { Navigate } from 'react-router-dom'
 import DriversRideDashboard from './DriversRideDashboard'
 import RidersRideDashboard from './RidersRideDashboard'
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const RideMain = () => {
 
   const { user } = useAuth();
   const [rides, setRides] = useState([])
   const [isActiveRide, setIsActiveRide] = useState(false)
   const [activeRide, setActiveRide] = useState(null)
+  const [activeRidesOfRider, setActiveRidesOfRider] = useState([])
 
   useEffect(() => {
     const fetchRides = async () => {
@@ -49,6 +28,7 @@ const RideMain = () => {
     }
     fetchRides()
     fetchActiveRidesOfDriver()
+    fetchActiveRidesOfRider()
   }, [])
 
   const handleAcceptRide = async (rideId) => {
@@ -79,9 +59,24 @@ const RideMain = () => {
     try {
       const res = await axios.get(
         'http://localhost:3003/api/ride/accepted-rides',
+        {},
         { withCredentials: true }
       )
       setActiveRide(res.data.ride[0])
+    }
+    catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  const fetchActiveRidesOfRider = async () =>{
+    try {
+      const res = await axios.get(
+        'http://localhost:3003/api/ride/accepted-rides-rider',
+        {},
+        { withCredentials: true }
+      )
+      setActiveRidesOfRider(res.data.ride[0])
     }
     catch (err) {
       console.log(err.message)
@@ -130,9 +125,9 @@ const RideMain = () => {
       </div>
     )
   } else {
-    console.log(activeRide)
-    if (activeRide) {
-      return <RidersRideDashboard ride={activeRide} setActiveRide={setActiveRide} />
+    console.log(activeRidesOfRider)
+    if (activeRidesOfRider.length != 0) {
+      return <RidersRideDashboard ride={activeRidesOfRider} setActiveRide={setActiveRidesOfRider} />
     } else {
       return (
         <div className='pt-10 flex gap-10 h-full w-full '>

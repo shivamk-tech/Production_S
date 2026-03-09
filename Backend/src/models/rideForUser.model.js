@@ -6,13 +6,32 @@ const rideSchema = new mongoose.Schema({
     ref: "User",
     required: true
   },
+  riderFirstName: {
+    type: String,
+    required: true
+  },
 
+  riderLastName: {
+    type: String,
+    required: true
+  },
+  
   driver: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     default: null
   },
 
+  driverFirstName: {
+    type: String,
+    default: null
+  },
+
+  driverLastName: {
+    type: String,
+    default: null
+  },
+  
   rideType: {
     type: String,
     enum: ["for_me", "for_other"],

@@ -126,6 +126,7 @@ const RideLocation = ({
       console.log("Ride created:", rideId)
 
       socket.emit("join-ride", rideId)
+      window.location.reload();
 
     } catch (err) {
       console.error("Error creating ride:", err.response?.data || err.message);
@@ -134,7 +135,7 @@ const RideLocation = ({
 
 
   };
-  
+
 
   return (
     <div className="flex gap-5 items-start h-full">

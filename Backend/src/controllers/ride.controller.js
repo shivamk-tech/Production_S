@@ -1,4 +1,5 @@
 const rideModel = require('../models/rideForUser.model')
+const userModel = require('../models/user.model')
 
 async function createRide(req, res) {
     try {
@@ -6,11 +7,20 @@ async function createRide(req, res) {
         const riderId = req.user.id
         const { pickup, drop, vehicleType, rideType = "for_me", otherRider, scheduledTime, distance } = req.body
 
+        const riderName = await userModel.findOne({ _id: riderId })
+
         if (!pickup || !drop) {
             return res.status(400).json({
                 message: "Pickup and drop locations are required"
             })
         }
+
+        if (!riderName) {
+            return res.status(400).json({
+                message: "Rider not found"
+            })
+        }
+
         if (!vehicleType) {
             return res.status(400).json({
                 message: "Vehicle type is required"
@@ -64,6 +74,10 @@ async function createRide(req, res) {
             pickup,
             drop,
             distance,
+            riderFirstName: riderName.firstName,
+            riderLastName: riderName.lastName,
+            driverFirstName: null,
+            driverLastName: null,
             vehicleType,
             rideType,
             otherRider: rideType === "for_other" ? otherRider : null,
@@ -94,7 +108,14 @@ async function acceptRide(req, res) {
 
         const driverId = req.user.id
         const { rideId } = req.params
-        console.log(req.user)
+        const driverName = await userModel.findOne({ _id: driverId })
+
+        if (!driverName) {
+            return res.status(400).json({
+                message: "Driver not found"
+            })
+        }
+
 
         if (!req.user.roles.includes("driver")) {
             return res.status(403).json({
@@ -106,13 +127,17 @@ async function acceptRide(req, res) {
             {
                 _id: rideId,
                 status: "pending",
-                isRideActive: false
+                isRideActive: false,
+                driverFirstName: null,
+                driverLastName: null
             },
             {
                 $set: {
                     driver: driverId,
                     status: "accepted",
-                    isRideActive: true
+                    isRideActive: true,
+                    driverFirstName: driverName.firstName,
+                    driverLastName: driverName.lastName
                 }
             },
             { new: true }
@@ -237,36 +262,38 @@ async function getPendingRides(req, res) {
     }
 }
 
-async function getAcceptedRidesOfDriverAndRiderInfo(req, res) {
+async function getAcceptedRidesOfDriverInfo(req, res) {
     try {
         const driverId = req.user.id
-        console.log(driverId)
-        const ride = await rideModel.find({driver:driverId})
-        if (!ride) {
+        const ride = await rideModel.find({ driver: driverId })
+        if (!ride || ride.length === 0) {
             return res.status(401).json({
                 message: "No active rides found"
-        const userId = req.user.id
-        let ride;
-
-        if (req.user.roles.includes("driver")) {
-            ride = await rideModel.find({ driver: userId, status: { $in: ["accepted", "started"] } }).populate('rider');
-        } else {
-            const activeRide = await rideModel.findOne({
-                rider: userId,
-                status: { $in: ["pending", "accepted", "started"] }
-            }).populate('driver');
-
-            ride = activeRide ? [activeRide] : [];
-        }
-
-        if (!ride || ride.length === 0) {
-            return res.status(200).json({
-                message: "No active rides found",
-                ride: []
             })
         }
         res.status(200).json({
             message: "successfully finded the active rides",
+            ride
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}
+
+async function getAcceptedRidesOfRiderInfo(req, res) {
+    try {
+        const riderId = req.user.id
+        const ride = await rideModel.find({ rider: riderId })
+        if (!ride || ride.length === 0) {
+            return res.status(401).json({
+                message: "No active rides found for rider"
+            })
+        }
+        res.status(200).json({
+            message: "successfully found the active rides for rider",
             ride
         })
     }
@@ -283,6 +310,6 @@ module.exports = {
     startRide,
     completeRide,
     getPendingRides,
-    getAcceptedRidesOfDriverAndRiderInfo,
+    getAcceptedRidesOfDriverInfo,
+    getAcceptedRidesOfRiderInfo
 }
-
