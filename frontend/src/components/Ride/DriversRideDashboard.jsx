@@ -4,18 +4,11 @@ import L from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
-const pickupIcon = L.icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/149/149060.png",
+const driverIcon = L.divIcon({
+  html: `<div style="background-color: white; border: 2px solid black; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold;">D</div>`,
+  className: '',
   iconSize: [30, 30],
-  iconAnchor: [15, 30],
-  popupAnchor: [0, -30],
-});
-
-const dropoffIcon = L.icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
-  iconSize: [30, 30],
-  iconAnchor: [15, 30],
-  popupAnchor: [0, -30],
+  iconAnchor: [15, 15],
 });
 
 const DriversRideDashboard = ({ ride, setRide }) => {
@@ -68,9 +61,16 @@ const DriversRideDashboard = ({ ride, setRide }) => {
       },
       createMarker: function (i, wp, nWps) {
         if (i === 0) {
-          return L.marker(wp.latLng, { icon: dropoffIcon }).bindPopup("Driver");
+          return L.marker(wp.latLng, { icon: driverIcon }).bindPopup("Driver");
         } else if (i === nWps - 1) {
-          return L.marker(wp.latLng, { icon: pickupIcon }).bindPopup("Pickup");
+          return L.circleMarker(wp.latLng, {
+            radius: 8,
+            fillColor: "white",
+            color: "black",
+            weight: 4,
+            opacity: 1,
+            fillOpacity: 1
+          }).bindPopup("Pickup");
         }
         return null;
       },
