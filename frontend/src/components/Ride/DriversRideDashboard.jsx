@@ -11,6 +11,13 @@ const driverIcon = L.divIcon({
   iconAnchor: [15, 15],
 });
 
+const pickupIcon = L.divIcon({
+  html: `<div style="background-color: white; border: 6px solid black; border-radius: 50%; width: 24px; height: 24px;"></div>`,
+  className: '',
+  iconSize: [24, 24],
+  iconAnchor: [12, 12],
+});
+
 const DriversRideDashboard = ({ ride, setRide }) => {
   const mapRef = useRef(null);
   const routingControlRef = useRef(null);
@@ -63,14 +70,7 @@ const DriversRideDashboard = ({ ride, setRide }) => {
         if (i === 0) {
           return L.marker(wp.latLng, { icon: driverIcon }).bindPopup("Driver");
         } else if (i === nWps - 1) {
-          return L.circleMarker(wp.latLng, {
-            radius: 8,
-            fillColor: "white",
-            color: "black",
-            weight: 4,
-            opacity: 1,
-            fillOpacity: 1
-          }).bindPopup("Pickup");
+          return L.marker(wp.latLng, { icon: pickupIcon }).bindPopup("Pickup");
         }
         return null;
       },
