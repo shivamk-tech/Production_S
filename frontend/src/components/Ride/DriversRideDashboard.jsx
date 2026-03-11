@@ -56,7 +56,11 @@ const DriversRideDashboard = ({ ride, setRide }) => {
     }
 
     if (routingControlRef.current) {
-      mapRef.current.removeControl(routingControlRef.current);
+      if (Array.isArray(routingControlRef.current)) {
+        routingControlRef.current.forEach(control => mapRef.current.removeControl(control));
+      } else {
+        mapRef.current.removeControl(routingControlRef.current);
+      }
     }
 
     const pickupLat = ride.pickup.location.coordinates[1];
@@ -64,9 +68,29 @@ const DriversRideDashboard = ({ ride, setRide }) => {
     const dropLat = ride.drop.location.coordinates[1];
     const dropLng = ride.drop.location.coordinates[0];
 
-    routingControlRef.current = L.Routing.control({
+    const driverToPickup = L.Routing.control({
       waypoints: [
         L.latLng(currentLocation.lat, currentLocation.lng),
+        L.latLng(pickupLat, pickupLng),
+      ],
+      routeWhileDragging: false,
+      show: false,
+      addWaypoints: false,
+      lineOptions: {
+        styles: [{ color: "#4b5563", opacity: 0.8, weight: 4 }], // Tailwind gray-600
+      },
+      createMarker: function (i, wp, nWps) {
+        if (i === 0) {
+          return L.marker(wp.latLng, { icon: driverIcon }).bindPopup("Driver");
+        } else if (i === nWps - 1) {
+          return L.marker(wp.latLng, { icon: pickupIcon }).bindPopup("Pickup");
+        }
+        return null;
+      },
+    }).addTo(mapRef.current);
+
+    const pickupToDrop = L.Routing.control({
+      waypoints: [
         L.latLng(pickupLat, pickupLng),
         L.latLng(dropLat, dropLng),
       ],
@@ -74,19 +98,17 @@ const DriversRideDashboard = ({ ride, setRide }) => {
       show: false,
       addWaypoints: false,
       lineOptions: {
-        styles: [{ color: "#000", opacity: 0.8, weight: 5 }],
+        styles: [{ color: "#2563eb", opacity: 0.8, weight: 4 }], // Tailwind blue-600
       },
       createMarker: function (i, wp, nWps) {
-        if (i === 0) {
-          return L.marker(wp.latLng, { icon: driverIcon }).bindPopup("Driver");
-        } else if (i === 1) {
-          return L.marker(wp.latLng, { icon: pickupIcon }).bindPopup("Pickup");
-        } else if (i === nWps - 1) {
+        if (i === nWps - 1) {
           return L.marker(wp.latLng, { icon: dropoffIcon }).bindPopup("Dropoff");
         }
         return null;
       },
     }).addTo(mapRef.current);
+
+    routingControlRef.current = [driverToPickup, pickupToDrop];
 
   }, [ride, currentLocation]);
 
