@@ -55,6 +55,8 @@ const DriversRideDashboard = ({ ride, setRide }) => {
       }).addTo(mapRef.current);
     }
 
+
+    
     if (routingControlRef.current) {
       if (Array.isArray(routingControlRef.current)) {
         routingControlRef.current.forEach(control => mapRef.current.removeControl(control));
