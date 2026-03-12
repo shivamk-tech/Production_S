@@ -7,7 +7,7 @@ const Suggestion = () => {
             <div className='text-4xl font-bold w-full' style={{ fontFamily: "Inter, system-ui, sans-serif" }}>
                 Suggestions
             </div>
-            <div className='flex items-center'>
+            <div className='flex items-center justify-center'>
                 <SuggCards />
             </div>
         </div>

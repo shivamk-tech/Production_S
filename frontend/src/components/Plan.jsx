@@ -23,7 +23,7 @@ const Plan = () => {
                     <div className='flex flex-col lg:flex-row gap-4 lg:gap-7'>
                         <div className='bg-[#9DCDD6] rounded-xl h-auto lg:h-100 relative w-full lg:w-192 pt-10  pb-6 lg:pb-0 lg:pt-17 px-5 lg:pl-10'>
                             <div className='flex flex-col gap-6 lg:gap-10 w-full lg:w-93'>
-                                <div className='text-3xl lg:text-4xl font-bold w-full lg:w-80' style={{ fontFamily: "Inter, system-ui, sans-serif" }}>Get your ride right with Uber Reserve</div>
+                                <div className='text-3xl lg:text-4xl font-bold w-full lg:w-81' style={{ fontFamily: "Inter, system-ui, sans-serif" }}>Get your ride right with Uber Reserve</div>
                                 <div className='flex flex-col gap-3 '>
                                     <div className='text-xl font-medium'>
                                         Choose date and time

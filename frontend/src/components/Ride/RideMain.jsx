@@ -1,4 +1,4 @@
-import React, { use } from 'react'
+import React from 'react'
 import RideLocation from './RideLocation'
 import RideYourLocation from './RideYourLocation'
 import { useAuth } from '../../context/AuthContext'
@@ -16,7 +16,7 @@ const RideMain = () => {
   const [rides, setRides] = useState([])
   const [isActiveRide, setIsActiveRide] = useState(false)
   const [activeRide, setActiveRide] = useState(null)
-  const [activeRidesOfRider, setActiveRidesOfRider] = useState([])
+  const [activeRidesOfRider, setActiveRidesOfRider] = useState(null)
 
   useEffect(() => {
     const fetchRides = async () => {
@@ -47,6 +47,7 @@ const RideMain = () => {
       setActiveRide(ride)
 
       // join socket room
+      console.log("Joining socket room:", ride._id)
       socket.emit("join-ride", ride._id)
       console.log(res.data.ride.isActiveRide)
     } catch (err) {
@@ -61,7 +62,12 @@ const RideMain = () => {
         'http://localhost:3003/api/ride/accepted-rides',
         { withCredentials: true }
       )
-      setActiveRide(res.data.ride[0])
+      const ride = res.data.ride[0]
+      setActiveRide(ride)
+      if (ride) {
+        console.log("Joining socket room:", ride._id)
+        socket.emit("join-ride", ride._id)
+      }
     }
     catch (err) {
       console.log(err.message)
@@ -74,7 +80,12 @@ const RideMain = () => {
         'http://localhost:3003/api/ride/accepted-rides-rider',
         { withCredentials: true }
       )
-      setActiveRidesOfRider(res.data.ride[0])
+      const ride = res.data.ride[0]
+      setActiveRidesOfRider(ride)
+      if (ride) {
+        console.log("Joining socket room:", ride._id)
+        socket.emit("join-ride", ride._id)
+      }
     }
     catch (err) {
       console.log(err.message)
@@ -125,7 +136,7 @@ const RideMain = () => {
   }
   } else {
     console.log(activeRidesOfRider)
-    if (activeRidesOfRider.length != 0) {
+    if (activeRidesOfRider) {
       return <RidersRideDashboard ride={activeRidesOfRider} setActiveRide={setActiveRidesOfRider} />
     } else {
       return (

@@ -105,7 +105,6 @@ async function createRide(req, res) {
 
 async function acceptRide(req, res) {
     try {
-
         const driverId = req.user.id
         const { rideId } = req.params
         const driverName = await userModel.findOne({ _id: driverId })

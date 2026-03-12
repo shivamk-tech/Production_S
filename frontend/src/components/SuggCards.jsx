@@ -49,8 +49,8 @@ const SuggCards = () => {
             {
                 CardImage.map((item, index) => {
                     return (
-                        <div key={index} className={`h-40 w-92 md:w-87 xl:w-92 bg-gray-100 p-4 flex justify-between rounded-[10px] ${index>=3 ? "hidden md:flex":"flex"} `}>
-                            <div className='flex flex-col gap-6'>
+                        <div key={index} className={`h-40 w-90 md:w-85 xl:w-92 bg-gray-100 p-4 flex justify-between rounded-[10px]  `}>
+                            <div className='flex flex-col gap-6 hidden sm:block'>
                                 <div className='flex flex-col gap-2'>
                                     <div className='font-semibold text-base'>{item.Heading}</div>
                                     <div className='font-light text-xs'>{item.Description}</div>
@@ -60,6 +60,7 @@ const SuggCards = () => {
                             <div className='h-48 w-48'>
                                 <img className='object-contain h-full w-full' src={item.image}  />
                             </div>
+                            <div className='font-semibold text-base sm:hidden'>{item.Heading}</div>
                         </div>
                     )
                 })
