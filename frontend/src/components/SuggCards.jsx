@@ -45,22 +45,22 @@ const SuggCards = () => {
 
 
     return (
-        <div className='flex flex-col md:flex-row flex-wrap items-center md:justify-center lg:justify-between gap-5 w-full '>
+        <div className='flex sm:flex-col md:flex-row flex-wrap items-center md:justify-center lg:justify-between justify-between gap-3 sm:gap-5 w-full '>
             {
                 CardImage.map((item, index) => {
                     return (
-                        <div key={index} className={`h-40 w-90 md:w-85 xl:w-92 bg-gray-100 p-4 flex justify-between rounded-[10px]  `}>
-                            <div className='flex flex-col gap-6 hidden sm:block'>
+                        <div key={index} className={`p-5 w-25 sm:h-40 sm:w-90 md:w-85 xl:w-92 bg-gray-100 sm:p-4 flex flex-col sm:flex-row justify-between rounded-[10px]`}>
+                            <div className="hidden sm:flex flex-col gap-6">
                                 <div className='flex flex-col gap-2'>
                                     <div className='font-semibold text-base'>{item.Heading}</div>
                                     <div className='font-light text-xs'>{item.Description}</div>
                                 </div>
                                 <button className='bg-white rounded-full px-1 py-2 w-18 font-medium text-sm'>Details</button>
                             </div>
-                            <div className='h-48 w-48'>
+                            <div className='h-15 w-15 sm:h-30 sm:w-48'>
                                 <img className='object-contain h-full w-full' src={item.image}  />
                             </div>
-                            <div className='font-semibold text-base sm:hidden'>{item.Heading}</div>
+                            <div className='font-semibold text-base sm:hidden w-full text-center'>{item.Heading}</div>
                         </div>
                     )
                 })

@@ -29,18 +29,14 @@ const CardCompoTravel = () => {
             button: "Search cities"
         }
     ]
-    console.log("CardCompoTravel");
-    console.log("CardCompoTravel");
-
-
-
+    
     return (
         <div className='flex items-center'>
             <div className='flex md:flex-row flex-col flex-wrap w-full items-center justify-between gap-5'>
                 {
                     CardData.map((item, index) => {
                         return (
-                            <div key={index} className='flex flex-col gap-5 md:gap-2 lg:gap-5 w-90 md:w-80 lg:w-90'>
+                            <div key={index} className='flex flex-col gap-5 md:gap-2 lg:gap-5 sm:w-85 md:w-80 lg:w-90'>
                                 <div className=' w-[100%]'>
                                     <img className='object-contain' src={item.image} />
                                 </div>

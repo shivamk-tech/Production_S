@@ -29,19 +29,19 @@ const Plan = () => {
                                         Choose date and time
                                     </div>
                                     <div className='flex flex-col w-full gap-5'>
-                                        <div className='flex lg:gap-3 gap-3 w-full lg:w-auto'>
+                                        <div className='flex lg:gap-3 gap-1 w-full lg:w-full'>
                                             <div className='w-full'>
                                                 <span className='text-sm text-gray-500'>Date</span>
-                                                <div className='h-12 w-auto lg:w-45 bg-white rounded-[10px] flex items-center p-4 gap-5 cursor-pointer'>
-                                                    <div className='h-4 w-4'><img src={CalendarIcon} alt="" className='object-cover' /></div>
-                                                    <input className='h-7 w-20 outline-none cursor-pointer' type="text" name="" id="" />
+                                                <div className='h-12 w-full lg:w-45 bg-white rounded-[10px] flex items-center p-4 gap-5 cursor-pointer'>
+                                                    <div className='h-4 w-6'><img src={CalendarIcon} alt="" className='object-cover' /></div>
+                                                    <input className='h-7 w-full outline-none cursor-pointer' type="text" name="" id="" />
                                                 </div>
                                             </div>
                                             <div className='w-full'>
                                                 <span className='text-sm text-gray-500'>Time</span>
                                                 <div className='h-12 w-full lg:w-45 bg-white rounded-[10px] flex items-center p-4 gap-5 cursor-pointer'>
                                                     <i className="fa-solid fa-clock"></i>
-                                                    <input className='h-7 w-20 outline-none cursor-pointer' type="text" name="" id="" />
+                                                    <input className='h-7 w-full outline-none cursor-pointer' type="text" name="" id="" />
                                                 </div>
                                             </div>
                                         </div>

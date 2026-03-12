@@ -2,13 +2,6 @@ import React from 'react'
 import mam from '../assets/mam.png'
 
 const Buisness = () => {
-  console.log("Buisness");
-  console.log("Buisness");
-  console.log("Buisness");
-  console.log("Buisness");
-  console.log("Buisness");
-  console.log("Buisness");
-  
 
   return (
     <div className='px-5 lg:px-40 h-auto lg:h-140 w-full bg-black my-8 lg:my-17 py-12 lg:py-16 text-white flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-0'>
@@ -32,7 +25,7 @@ const Buisness = () => {
             </div>
 
             <div className='flex gap-5 items-center'>
-              <button className='bg-white text-black font-medium px-7 py-3 rounded-[10px]'>Get started</button>
+              <button className='bg-white text-black font-medium px-4 sm:px-6 py-3 rounded-[10px]'>Get started</button>
               <u className='underline underline-offset-6'>Check out our solutions</u>
             </div>
         </div>

@@ -46,8 +46,8 @@ const Hero = () => {
                         </div>
                     </div>
                     {/* Location */}
-                        <div className='flex flex-col gap-4 relative lg:w-full w-100'>
-                        <div className='absolute z-100000 flex flex-col items-center top-5 left-5'>
+                    <div className='flex flex-col gap-4 relative lg:w-full '>
+                        <div className='absolute z-[1] flex flex-col items-center top-5 left-5'>
                             <div className='border-6 rounded-full h-4 w-4'></div>
                             <div className='w-1 h-14 '></div>
                             <div className='h-4 w-4 border-5'></div>
@@ -59,9 +59,9 @@ const Hero = () => {
                         <div>
                             <input type="text" className='h-10 bg-[#EFEFEF] pl-12 pr-12 rounded-[7px] py-7 w-full' placeholder='Dropoff location' />
                         </div>
-                        <div className='flex gap-5'>
-                            <button className='text-white bg-black rounded-[8px] px-6 py-3 '><span className='font-semibold'>See prices</span></button>
-                            <button className='text-black bg-gray-200 rounded-[8px] px-7 py-3 '><span className='font-semibold'>Schedule for later</span></button>
+                        <div className='flex gap-3 sm:gap-5'>
+                            <button className='text-white bg-black rounded-[8px] px-4 sm:px-6 py-3'><span className='font-medium sm:font-semibold'>See prices</span></button>
+                            <button className='text-black bg-gray-200 rounded-[8px] px-4 sm:px-6 py-3 '><span className='font-medium sm:font-semibold'>Schedule for later</span></button>
                         </div>
                     </div>
                 </div>
