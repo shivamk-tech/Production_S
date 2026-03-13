@@ -117,7 +117,7 @@ const RideLocation = ({
         "http://localhost:3003/api/ride/create-rides",
         rideData,
         {
-          withCredentials:true
+          withCredentials: true
         }
       )
 
@@ -138,8 +138,8 @@ const RideLocation = ({
 
 
   return (
-    <div className="flex gap-5 items-start h-full">
-      <div className="h-100 w-80 border-2 border-gray-100 rounded-2xl flex flex-col gap-4 p-4 bg-white shadow-lg relative overflow-hidden">
+    <div className="flex flex-col lg:flex-row gap-5 items-start h-full lg:h-full w-full lg:w-auto transition-all duration-300">
+      <div className="h-full lg:h-100 w-full lg:w-80 border-2 border-gray-100 rounded-2xl flex flex-col gap-4 p-2 lg:p-4 bg-white shadow-lg relative overflow-y-auto overflow-x-hidden shrink-0">
         <style>
           {`
           @keyframes slideUp {
@@ -153,7 +153,7 @@ const RideLocation = ({
         `}
         </style>
         {isScheduleOpen && (
-          <div className="absolute inset-0 bg-white z-50 rounded-2xl p-4 flex flex-col gap-4" style={{ animation: 'slideUp 0.3s ease-out' }}>
+          <div className="fixed inset-0 lg:absolute lg:inset-0 bg-white z-[2500] lg:z-50 lg:rounded-2xl p-4 flex flex-col gap-4" style={{ animation: 'slideUp 0.3s ease-out' }}>
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold">Schedule a Ride</h3>
               <button onClick={() => setIsScheduleOpen(false)} className="p-1 hover:bg-gray-200 rounded-full transition-colors">
@@ -238,7 +238,7 @@ const RideLocation = ({
         )}
 
         {isRiderModalOpen && (
-          <div className="absolute inset-0 bg-white z-50 rounded-2xl p-4 flex flex-col gap-4" style={{ animation: 'slideUp 0.3s ease-out' }}>
+          <div className="fixed inset-0 lg:absolute lg:inset-0 bg-white z-[2500] lg:z-50 lg:rounded-2xl p-4 flex flex-col gap-4" style={{ animation: 'slideUp 0.3s ease-out' }}>
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold">Who's riding?</h3>
               <button onClick={() => setIsRiderModalOpen(false)} className="p-1 hover:bg-gray-200 rounded-full transition-colors">
@@ -305,7 +305,7 @@ const RideLocation = ({
           </div>
         )}
 
-        <div className="text-[20px] font-semibold">Get a ride</div>
+        <div className="text-[20px] font-semibold hidden lg:block">Get a ride</div>
 
         <form onSubmit={SubmitForm} className="flex flex-col gap-4">
 
@@ -316,7 +316,7 @@ const RideLocation = ({
             </div>
 
             <input
-              className="bg-[#EFEFEF] pl-10 px-4 py-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none transition-all"
+              className="bg-[#EFEFEF] pl-10 px-4 py-2 lg:py-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none transition-all"
               placeholder="Pickup Location"
               value={pickupQuery}
               onChange={(e) => setPickupQuery(e.target.value)}
@@ -352,7 +352,7 @@ const RideLocation = ({
 
             </div>
             <input
-              className="bg-[#EFEFEF] pl-10 px-4 py-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none transition-all"
+              className="bg-[#EFEFEF] pl-10 px-4 py-2 lg:py-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none transition-all"
               placeholder="Dropoff Location"
               value={dropoffQuery}
               onChange={(e) => setDropoffQuery(e.target.value)}
@@ -382,25 +382,22 @@ const RideLocation = ({
             )}
           </div>
 
-          <div>
+          <div className="flex gap-3">
             <button
               type="button"
               onClick={() => setIsScheduleOpen(true)}
-              className="flex bg-[#EFEFEF] px-4 py-3 w-full rounded-lg items-center justify-between hover:bg-gray-200 active:scale-95 transition-all"
+              className="flex-1 flex bg-[#EFEFEF] px-3 py-2 lg:px-4 lg:py-3 rounded-full lg:rounded-lg items-center justify-between hover:bg-gray-200 active:scale-95 transition-all"
             >
               <div className="flex gap-2 items-center">
                 <div className="w-5"><img className="object-cover h-full w-full" src={clock} alt="" /></div>
-                <span className="font-normal">Pickup now</span>
+                <span className="font-normal text-sm whitespace-nowrap">Pickup now</span>
               </div>
               <ChevronDown size={15} className="" strokeWidth={4} />
             </button>
-          </div>
-
-          <div>
             <button
               type="button"
               onClick={() => setIsRiderModalOpen(true)}
-              className="flex bg-[#EFEFEF] px-4 py-3 w-30 rounded-full items-center justify-between hover:bg-gray-200 active:scale-95 transition-all"
+              className="w-30 flex-shrink-0 flex bg-[#EFEFEF] px-3 py-2 lg:px-4 lg:py-3 rounded-full lg:rounded-lg items-center justify-between hover:bg-gray-200 active:scale-95 transition-all"
             >
               <div className="flex gap-2 items-center">
                 <UserRound size={15} strokeWidth={4} />
@@ -414,7 +411,7 @@ const RideLocation = ({
 
           <button
             type="submit"
-            className="py-3 rounded-lg bg-black text-white font-medium hover:opacity-87 cursor-pointer active:scale-95 transition-all"
+            className="lg:py-3 py-1 rounded-lg bg-black text-white font-medium hover:opacity-87 cursor-pointer active:scale-95 transition-all"
           >
             Search Ride
           </button>
@@ -422,7 +419,7 @@ const RideLocation = ({
       </div>
 
       {isVehiclePanelOpen && (
-        <div className="h-full w-[400px] border-2 border-gray-100 rounded-2xl flex flex-col gap-4 p-4 bg-white shadow-lg relative overflow-hidden" style={{ animation: 'slideIn 0.5s ease-out' }}>
+        <div className="fixed inset-0 lg:static z-[2000] lg:z-auto h-full lg:h-full w-full lg:w-[400px] border-none lg:border-2 lg:border-gray-100 rounded-none lg:rounded-2xl flex flex-col gap-4 p-4 bg-white shadow-none lg:shadow-lg relative overflow-hidden shrink-0" style={{ animation: 'slideIn 0.5s ease-out' }}>
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold">{vehiclePanelMode === 'select' ? 'Choose a Ride' : 'Confirm Ride'}</h3>
             <button onClick={() => setIsVehiclePanelOpen(false)} className="p-1 hover:bg-gray-200 rounded-full transition-colors">

@@ -143,19 +143,21 @@ const RideYourLocation = () => {
   }, [pickup, dropoff, handleSearch]);
 
   return (
-    <div className="flex gap-6 w-full">
+    <div className="flex flex-col lg:flex-row gap-1 lg:gap-6 w-full h-[calc(100vh-80px)] lg:h-auto">
       {/* Left Panel */}
-      <RideLocation
-        pickup={pickup}
-        dropoff={dropoff}
-        setPickup={setPickup}
-        setDropoff={setDropoff}
-        onSearch={handleSearch}
-        fareInfo={fareInfo}
-      />
+      <div className="lg:h-auto w-full lg:w-auto shrink-0">
+        <RideLocation
+          pickup={pickup}
+          dropoff={dropoff}
+          setPickup={setPickup}
+          setDropoff={setDropoff}
+          onSearch={handleSearch}
+          fareInfo={fareInfo}
+        />
+      </div>
 
       {/* Map */}
-      <div className="h-175 w-240 rounded-2xl overflow-hidden bg-white shadow-xl border border-gray-200 relative">
+      <div className="h-[50%] lg:h-175 w-full lg:flex-1 rounded-2xl overflow-hidden bg-white shadow-xl border border-gray-200 relative shrink-0">
         <div id="map" className="w-full h-full"></div>
 
         {/* Fare Box */}
@@ -167,6 +169,7 @@ const RideYourLocation = () => {
           </div>
         )}
       </div>
+
     </div>
   );
 };

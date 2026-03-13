@@ -16,7 +16,7 @@ import Footer from '../Footer'
 const ReqRideMain = () => {
   return (
     <div className='flex flex-col'>
-      <div className='pt-32 px-40'>
+      <div className='w-full pt-32 lg:px-40 px-6 flex flex-col items-center'>
         <Navbar />
         <SubNav />
         <ReqRideHero />

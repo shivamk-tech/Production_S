@@ -1,14 +1,49 @@
-import React from 'react'
-import van from '../../assets/van.png'
+import React, { useRef } from 'react'
 
-const ReqRideCardforWorld = ({ ArrayObject, ScrollRef }) => {
-  
+const ReqRideCardforWorld = ({ ArrayObject, ScrollRef, setPageNum, TotalPage }) => {
+  const scrollTimeout = useRef(null);
+
+  const handleScroll = (e) => {
+    // Do nothing if we don't have a way to update page number
+    if (!setPageNum || !TotalPage) return;
+
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+
+    // Use a timeout to only update the page number when scrolling has stopped
+    scrollTimeout.current = setTimeout(() => {
+      const { scrollLeft } = e.target;
+
+      // These values should match the logic in the parent component
+      const itemWidth = 400; // w-85 (340px) + gap-15 (60px)
+      let itemsPerPage = 1;
+      if (window.innerWidth >= 1024) {
+        itemsPerPage = 3;
+      } else if (window.innerWidth >= 768) {
+        itemsPerPage = 2;
+      }
+
+      const scrollAmountPerPage = itemWidth * itemsPerPage;
+      let newPageNum = Math.round(scrollLeft / scrollAmountPerPage) + 1;
+
+      // Clamp the page number to be within valid bounds
+      if (newPageNum > TotalPage) newPageNum = TotalPage;
+      if (newPageNum < 1) newPageNum = 1;
+
+      setPageNum(newPageNum);
+    }, 150);
+  };
+
   return (
-    <div ref={ScrollRef} className="flex gap-15 overflow-hidden w-full">
+    <div
+      ref={ScrollRef}
+      onScroll={handleScroll}
+      className="flex gap-15 overflow-x-auto w-full snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+    >
       {ArrayObject.map((item, index) => (
-        <div key={index} className='flex flex-col gap-5'>
-          
-          <div className='w-85 overflow-hidden h-43'>
+        <div key={index} className='flex flex-col gap-5 flex-shrink-0 w-85 snap-start'>
+          <div className='overflow-hidden h-43'>
             <img className='object-cover h-full w-full' src={item.image} alt=""/>
           </div>
 

@@ -13,7 +13,7 @@ const SubNav = () => {
       </div>
       <div className='flex flex-row text-gray-600 font-light text-sm justify-between whitespace-nowrap gap-5.5 pr-4 '>
         <div className='cursor-pointer hover:text-black hidden lg:block'><a href="/ride">Request a ride</a></div>
-        <div className='cursor-pointer hover:text-black hidden lg:block'>Reserve a ride</div>
+        <div className='cursor-pointer hover:text-black hidden lg:block'><a href="/ride">Reserve a ride</a></div>
         <div className='cursor-pointer hover:text-black hidden lg:block'><a href="/ride">See prices</a></div>
         <div className='cursor-pointer hover:text-black hidden lg:block'><a href="/exploreride">Explore ride options</a></div>
         <div className='cursor-pointer hover:text-black hidden lg:block'><a href="/airport">Airport rides</a></div>
@@ -21,11 +21,11 @@ const SubNav = () => {
 
       <div className={`absolute top-full left-0 w-full bg-white shadow-lg overflow-hidden transition-all duration-500 ease-in-out lg:hidden flex flex-col z-20 ${isMenuOpen ? "h-[30vh] opacity-100" : "h-0 opacity-0"}`}>
         <div className='flex flex-col gap-3 p-5'>
-          <a href="" className='text-sm font-semibold'>Request a ride</a>
-          <a href="" className='text-sm font-semibold'>Reserve a ride</a>
-          <a href="" className='text-sm font-semibold'>See prices</a>
-          <a href="" className='text-sm font-semibold'>Explore ride options</a>
-          <a href="" className='text-sm font-semibold'>Airport rides</a>
+          <a href="" className='text-sm font-semibold'><a href="/ride">Request a ride</a></a>
+          <a href="" className='text-sm font-semibold'><a href="/ride">Reserve a ride</a></a>
+          <a href="" className='text-sm font-semibold'><a href="/ride">See prices</a></a>
+          <a href="" className='text-sm font-semibold'><a href="/exploreride">Explore ride options</a></a>
+          <a href="" className='text-sm font-semibold'><a href="/airport">Airport rides</a></a>
         </div>
       </div>
 

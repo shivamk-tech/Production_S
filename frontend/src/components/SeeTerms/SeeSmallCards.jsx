@@ -3,9 +3,9 @@ import React from 'react'
 const SeeSmallCards = ({ ArrayObject, ScrollRef }) => {
 
     return (
-        <div ref={ScrollRef} className="flex gap-9 overflow-hidden w-full">
+        <div ref={ScrollRef} className="flex gap-9 overflow-x-auto w-full snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {ArrayObject.map((item, index) => (
-                <div key={index} className='flex flex-col gap-5 group'>
+                <div key={index} className='flex flex-col gap-5 group snap-start flex-shrink-0'>
 
                     <div className='w-90 overflow-hidden '>
                         <img className='object-cover h-full w-full group-hover:scale-125 duration-300' src={item.image} alt="" />

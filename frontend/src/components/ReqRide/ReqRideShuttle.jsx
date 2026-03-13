@@ -5,10 +5,10 @@ const ReqRideShuttle = () => {
     return (
         <div className='flex gap-35 w-full'>
             <div className='flex flex-col gap-7'>
-                <div className='text-4xl font-semibold w-105 text-[#333333]'>
+                <div className='text-4xl font-semibold lg:w-105 text-[#333333]'>
                     Commute in Comfort with Uber Shuttle
                 </div>
-                <div className=' font-light w-105'>
+                <div className=' font-light w-87 lg:w-105'>
                     Uber Shuttle is a new way to enjoy a comfortable, safe, and convenient commute in Delhi. There’s no need to wait to hail down and squeeze onto a crowded bus, spend hours in the metro or drive in peak traffic.
                 </div>
                 <div>
@@ -17,7 +17,7 @@ const ReqRideShuttle = () => {
                     </button>
                 </div>
             </div>
-            <div className='w-380 bg-amber-500'>
+            <div className='w-380 lg:block hidden'>
                 <img className='object-cover h-full w-full' src={blueshirt} alt="" />
             </div>
         </div>

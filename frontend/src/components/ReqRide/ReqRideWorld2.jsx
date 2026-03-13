@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { ChevronRight } from 'lucide-react';
 import { ChevronLeft } from 'lucide-react';
 import ReqRideCardforWorld from './ReqRideCardforWorld'
@@ -168,56 +168,72 @@ const ReqRideWorld = () => {
         }
     ]
 
+    // Calculate pages dynamically based on screen width and active array length
+    useEffect(() => {
+        const calculateTotalPages = () => {
+            const activeArray = IsActive === 'features' ? FeaturesArray : IsActive === 'wheels' ? WheelsArray : ExtraArray;
+            let itemsPerPage = 1;
+
+            if (window.innerWidth >= 1024) {
+                itemsPerPage = 3;
+            } else if (window.innerWidth >= 768) {
+                itemsPerPage = 2;
+            }
+
+            const newTotalPage = Math.ceil(activeArray.length / itemsPerPage);
+            setTotalPage(newTotalPage);
+
+            // Ensure PageNum is not out of bounds if window is resized
+            setPageNum(prev => (prev > newTotalPage ? newTotalPage : prev));
+        };
+
+        calculateTotalPages(); // Initial calculation
+        window.addEventListener('resize', calculateTotalPages);
+        return () => window.removeEventListener('resize', calculateTotalPages);
+    }, [IsActive]);
+
+
     function ScrollRight() {
         const activeRef = IsActive === 'features' ? FeaturesRef : IsActive === 'wheels' ? WheelsRef : ExtraRef;
-        activeRef.current?.scrollBy({
-            left: 1200,
-            behavior: 'smooth'
-        });
-        if (IsActive === 'features') {
-            setTotalPage(3)
-            if (PageNum < TotalPage) {
-                setPageNum(PageNum + 1)
-            }
-        }
-        if (IsActive === 'wheels') {
-            setTotalPage(2)
-            if (PageNum < TotalPage) {
-                setPageNum(PageNum + 1)
-            }
-        }
-        if (IsActive === 'extra') {
-            setTotalPage(2)
-            if (PageNum < TotalPage) {
-                setPageNum(PageNum + 1)
-            }
+        let scrollAmount = 400;
+
+        if (window.innerWidth >= 1024) {
+            scrollAmount = 1200;
+        } else if (window.innerWidth >= 768) {
+            scrollAmount = 800;
+        } else {
+            scrollAmount = 400;
         }
 
+        // Only scroll if we haven't reached the last page
+        if (PageNum < TotalPage) {
+            activeRef.current?.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+            setPageNum(PageNum + 1);
+        }
     }
 
     function ScrollLeft() {
         const activeRef = IsActive === 'features' ? FeaturesRef : IsActive === 'wheels' ? WheelsRef : ExtraRef;
-        activeRef.current?.scrollBy({
-            left: -1200,
-            behavior: 'smooth'
-        });
-        if (IsActive === 'features') {
-            setTotalPage(3)
-            if (PageNum > 1) {
-                setPageNum(PageNum - 1)
-            }
+        let scrollAmount = 400;
+
+        if (window.innerWidth >= 1024) {
+            scrollAmount = 1200; // lg
+        } else if (window.innerWidth >= 768) {
+            scrollAmount = 800; // md
+        } else {
+            scrollAmount = 400; // < md (mobile + sm)
         }
-        if (IsActive === 'wheels') {
-            setTotalPage(2)
-            if (PageNum > 1) {
-                setPageNum(PageNum - 1)
-            }
-        }
-        if (IsActive === 'extra') {
-            setTotalPage(2)
-            if (PageNum > 1) {
-                setPageNum(PageNum - 1)
-            }
+
+        // Only scroll if we are not on the first page
+        if (PageNum > 1) {
+            activeRef.current?.scrollBy({
+                left: -scrollAmount,
+                behavior: 'smooth'
+            });
+            setPageNum(PageNum - 1);
         }
     }
 
@@ -226,14 +242,13 @@ const ReqRideWorld = () => {
             <div className='text-4xl font-semibold text-[#333333]'>
                 Rides around the world
             </div>
-            <div className='w-185 text-[#333333]'>
+            <div className='w-full lg:w-185 text-[#333333]'>
                 There’s more than one way to move with Uber, no matter where you are or where you’re headed next. Check the app to see which ride options are available near you.*
             </div>
             <div className='relative flex gap-8 pl-4 h-10 text-sm font-semibold'>
                 <div onClick={() => {
                     setIsActive('features')
                     setPageNum(1)
-                    setTotalPage(3)
                 }}
                     className='cursor-pointer'>
                     Features
@@ -241,7 +256,6 @@ const ReqRideWorld = () => {
                 <div onClick={() => {
                     setIsActive('wheels')
                     setPageNum(1)
-                    setTotalPage(2)
                 }}
                     className='cursor-pointer'>
                     2 or 3 wheels
@@ -249,7 +263,6 @@ const ReqRideWorld = () => {
                 <div onClick={() => {
                     setIsActive('extra')
                     setPageNum(1)
-                    setTotalPage(2)
                 }}
                     className='cursor-pointer'>
                     Extra room
@@ -260,26 +273,26 @@ const ReqRideWorld = () => {
             <div className='flex flex-col gap-20 '>
                 {/* features */}
                 <div className={IsActive === "features" ? "block" : "hidden"} >
-                    <ReqRideCardforWorld ArrayObject={FeaturesArray} ScrollRef={FeaturesRef} />
+                    <ReqRideCardforWorld ArrayObject={FeaturesArray} ScrollRef={FeaturesRef} setPageNum={setPageNum} TotalPage={TotalPage} />
                 </div>
                 {/* wheels */}
                 <div className={IsActive === "wheels" ? "block" : "hidden"} >
-                    <ReqRideCardforWorld ArrayObject={WheelsArray} ScrollRef={WheelsRef} />
+                    <ReqRideCardforWorld ArrayObject={WheelsArray} ScrollRef={WheelsRef} setPageNum={setPageNum} TotalPage={TotalPage} />
                 </div>
                 {/* Extra */}
                 <div className={IsActive === "extra" ? "block" : "hidden"}>
-                    <ReqRideCardforWorld ArrayObject={ExtraArray} ScrollRef={ExtraRef} />
+                    <ReqRideCardforWorld ArrayObject={ExtraArray} ScrollRef={ExtraRef} setPageNum={setPageNum} TotalPage={TotalPage} />
                 </div>
                 <div className='relative w-full'>
                     <div className='flex gap-5 items-center absolute right-0'>
                         <div className=''>
                             {PageNum}/{TotalPage}
                         </div>
-                        <div className='rounded-full bg-gray-300 h-13 w-13 flex items-center justify-center hover:bg-gray-400 duration-150 cursor-pointer' onClick={ScrollLeft} >
-                            <ChevronLeft strokeWidth={3} className={`${PageNum === 1 ? "text-gray-500" : "text-black"}`} />
+                        <div className={`rounded-full h-13 w-13 flex items-center justify-center duration-150 ${PageNum === 1 ? "bg-gray-200 cursor-default" : "bg-gray-300 hover:bg-gray-400 cursor-pointer"}`} onClick={ScrollLeft} >
+                            <ChevronLeft strokeWidth={3} className={`${PageNum === 1 ? "text-gray-400" : "text-black"}`} />
                         </div>
-                        <div className='rounded-full bg-gray-300 h-13 w-13 flex items-center justify-center cursor-pointer hover:bg-gray-400 duration-150' onClick={ScrollRight}>
-                            <ChevronRight strokeWidth={3} className={`${PageNum === TotalPage ? "text-gray-500" : "text-black"}`} />
+                        <div className={`rounded-full h-13 w-13 flex items-center justify-center duration-150 ${PageNum === TotalPage ? "bg-gray-200 cursor-default" : "bg-gray-300 hover:bg-gray-400 cursor-pointer"}`} onClick={ScrollRight}>
+                            <ChevronRight strokeWidth={3} className={`${PageNum === TotalPage ? "text-gray-400" : "text-black"}`} />
                         </div>
                     </div>
                 </div>

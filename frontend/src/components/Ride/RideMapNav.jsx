@@ -123,15 +123,15 @@ const RideMapNav = () => {
   }
 
   return (
-    <div className='h-16 border-b-4 border-gray-200 fixed left-0 top-0 z-[1000] w-full overflow-hidden flex items-center px-4 lg:px-16 justify-between bg-white'>
+    <div className='lg:h-16  border-b-4 border-gray-200 fixed left-0 top-0 z-[1000] w-full overflow-hidden flex items-center px-4 lg:px-16 justify-between bg-white'>
       <Sidebar />
       {/* left section */}
       <div className='flex items-center gap-4 lg:gap-20'>
         <button onClick={() => setIsSidebarOpen(true)} className='lg:hidden p-2 hover:bg-gray-100 rounded-full'>
           <Menu size={24} />
         </button>
-        <div className='h-12'>
-          <img className='object-contain h-full' src={wlogo} alt="" />
+        <div className='h-12 lg:block hidden'>
+          <img className='object-contain h-full lg:block hidden' src={wlogo} alt="" />
         </div>
         <div className='hidden lg:flex gap-3'>
           <div className='flex items-center'>
@@ -164,7 +164,7 @@ const RideMapNav = () => {
             <span className='text-sm font-medium'>Login</span>
           </button>
 
-          <button onClick={() => { navigate('/signup') }} className='flex gap-1 py-2 px-3 rounded-full items-center bg-black text-white cursor-pointer text-sm font-medium'>
+          <button onClick={() => { navigate('/signup') }} className='whitespace-nowrap gap-1 py-2 px-3 rounded-full items-center bg-black text-white cursor-pointer text-sm font-medium'>
             Sign up
           </button>
         </div>

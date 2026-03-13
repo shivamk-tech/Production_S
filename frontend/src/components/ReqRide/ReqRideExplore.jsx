@@ -48,25 +48,25 @@ const ReqRideExplore = () => {
 
 
     return (
-        <div className='lg:pt-30 pt-15 flex flex-col gap-10 items-center w-full py-15'>
+        <div className='lg:pt-30 pt-15 flex flex-col gap-10 items-center w-full py-15 '>
             <div className='lg:text-4xl text-2xl w-full font-bold'>
                 Explore the globe with Uber
             </div>
             {/* 2 Cards div */}
-            <div className='flex items-start justify-between gap-5 '>
+            <div className='flex md:flex-row flex-col items-start justify-between gap-5 w-full'>
                 {CardData2.map((item, index) => (
-                    <div key={index} className='flex flex-col gap-5'>
+                    <div key={index} className='flex flex-col gap-5 w-full'>
 
-                        <div className='w-140 overflow-hidden' >
+                        <div className='w-full bg-blue-400 overflow-hidden' >
                             <img className='object-cover h-full w-full' src={item.image} alt="" />
                         </div>
 
                         <div className='flex flex-col gap-3'>
-                            <div className='text-lg font-medium w-140'>
+                            <div className='text-lg font-medium w-full'>
                                 {item.heading}
                             </div>
 
-                            <div className='text-[#333333] font-light text-base w-140'>
+                            <div className='text-[#333333] font-light text-base w-full'>
                                 {item.desc}
                             </div>
                         </div>
@@ -83,20 +83,20 @@ const ReqRideExplore = () => {
             {/* 3 Cards div */}
             <div className='w-full'>
                 <div className='w-full'>
-                    <div className='flex items-start justify-between gap-5 w-full'>
+                    <div className='flex flex-col lg:flex-row items-start justify-between gap-5 w-full'>
                         {CardData3.map((item, index) => (
-                            <div key={index} className='flex flex-col gap-5'>
+                            <div key={index} className='flex flex-col gap-5 w-full'>
 
-                                <div className='w-90 overflow-hidden'>
+                                <div className='w-full overflow-hidden'>
                                     <img className='object-cover h-full w-full' src={item.image} alt="" />
                                 </div>
 
                                 <div className='flex flex-col gap-3'>
-                                    <div className='text-lg font-medium w-85'>
+                                    <div className='text-lg font-medium w-full'>
                                         {item.heading}
                                     </div>
 
-                                    <div className='text-[#333333] font-light text-base w-90'>
+                                    <div className='text-[#333333] font-light text-base w-full'>
                                         {item.desc}
                                     </div>
                                 </div>

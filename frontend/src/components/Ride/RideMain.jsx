@@ -140,7 +140,7 @@ const RideMain = () => {
       return <RidersRideDashboard ride={activeRidesOfRider} setActiveRide={setActiveRidesOfRider} />
     } else {
       return (
-        <div className='pt-10 flex gap-10 h-full w-full '>
+        <div className='pt-2 lg:pt-10 flex gap-10 h-full w-full '>
           <RideYourLocation />
         </div>
       )

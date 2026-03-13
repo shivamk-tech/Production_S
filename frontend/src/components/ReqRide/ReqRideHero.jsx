@@ -5,7 +5,7 @@ import SmileMam from "../../assets/SmileMam.png";
 const Hero = () => {
 
     return (
-        <div className='flex flex-col lg:flex-row gap-30 justify-between w-full lg:px-0  items-center pt-20'>
+        <div className='flex flex-col lg:flex-row gap-30 justify-between w-full lg:px-0  items-center pt-10 lg:pt-20'>
             <div className='flex flex-col gap-5 lg:gap-13 w-full lg:w-auto'>
                 {/* Hero text */}
                 <div className='flex flex-col gap-2 lg:gap-3 sm:w-full'>
@@ -29,10 +29,10 @@ const Hero = () => {
                         </div>
                     </div>
                     {/* Location */}
-                    <div className='flex flex-col gap-4 relative lg:w-full w-100'>
-                        <div className='absolute z-100000 flex flex-col items-center top-5 left-5'>
+                    <div className='flex flex-col gap-4 relative lg:w-full '>
+                        <div className='absolute z-[1] flex flex-col items-center top-5 left-5'>
                             <div className='border-6 rounded-full h-4 w-4'></div>
-                            <div className='w-[1px] h-14 bg-black'></div>
+                            <div className='w-1 h-14 '></div>
                             <div className='h-4 w-4 border-5'></div>
                         </div>
                         <div>
@@ -42,15 +42,15 @@ const Hero = () => {
                         <div>
                             <input type="text" className='h-10 bg-[#EFEFEF] pl-12 pr-12 rounded-[7px] py-7 w-full' placeholder='Dropoff location' />
                         </div>
-                        <div className='flex gap-5 items-center'>
-                            <button className='text-white bg-black rounded-[8px] px-6 py-3 '><span className='font-semibold'>See prices</span></button>
-                            <a href=""><u className='underline-offset-10 decoration-gray-300'>Download the uber app</u></a>
+                        <div className='flex gap-3 sm:gap-5'>
+                            <button className='text-white bg-black rounded-[8px] px-4 sm:px-6 py-3'><span className='font-medium sm:font-semibold'>See prices</span></button>
+                            <button className='text-black bg-gray-200 rounded-[8px] px-4 sm:px-6 py-3 '><span className='font-medium sm:font-semibold'>Schedule for later</span></button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className='h-138 lg:max-w-[750px] w-200 rounded-[10px] overflow-hidden lg:block hidden bg-blue-500 bg-blue-300'>
-                <img src={SmileMam} className='object-cover w-full h-full block' />
+            <div className='h-138 lg:max-w-[750px] lg:block hidden'>
+                <img src={SmileMam} className='object-cover w-full h-full block rounded-2xl' />
             </div>
         </div>
 
