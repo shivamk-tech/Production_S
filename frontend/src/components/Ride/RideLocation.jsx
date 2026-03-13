@@ -382,35 +382,6 @@ const RideLocation = ({
             )}
           </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           <div className="flex gap-3">
             <button
               type="button"
