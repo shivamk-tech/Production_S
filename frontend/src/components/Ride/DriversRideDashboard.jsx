@@ -50,8 +50,8 @@ const DriversRideDashboard = ({ ride, setRide }) => {
         attributionControl: false
       }).setView([28.6139, 77.2090], 13);
       
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "Uber.Creations",
+      L.tileLayer("https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
+        attribution: "Google Maps",
       }).addTo(mapRef.current);
     }
 

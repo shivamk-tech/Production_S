@@ -3,6 +3,10 @@ import L from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import RideLocation from "./RideLocation";
+import SuggCards from "../SuggCards";
+import Card1 from "../../assets/card1.png"
+import Card2 from "../../assets/card2.png"
+import Card3 from "../../assets/card3.png"
 
 const pickupIcon = L.icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/149/149060.png", // Replace with your pickup icon path
@@ -91,15 +95,17 @@ const RideYourLocation = () => {
     });
   }, [pickup, dropoff]);
 
-  // 🔥 Initialize Map Once
+  // Initialize Map On
   useEffect(() => {
     if (mapRef.current) return;
 
-    const map = L.map("map").setView([28.6139, 77.2090], 13);
+    const map = L.map("map", {
+      zoomControl: false
+    }).setView([28.6139, 77.2090], 13);
     mapRef.current = map;
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "Uber.Creations",
+    L.tileLayer("https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
+      attribution: "Google Maps",
     }).addTo(map);
 
     map.locate({ setView: true, maxZoom: 16 });
@@ -142,6 +148,23 @@ const RideYourLocation = () => {
     }
   }, [pickup, dropoff, handleSearch]);
 
+  const CardImage = [
+    {
+      Heading: "Ride",
+      image: Card1,
+      Description: "Go anywhere with Uber. Request a ride, hop in, and go."
+    },
+    {
+      Heading: "Rentals",
+      image: Card2,
+      Description: "Reserve your ride in advance so you can relax on the day of your trip."
+    },
+    {
+      Heading: "Reserve",
+      image: Card3,
+      Description: "Get convenient, affordable outstation cabs anytime at your door."
+    }]
+
   return (
     <div className="flex flex-col lg:flex-row gap-1 lg:gap-6 w-full h-[calc(100vh-80px)] lg:h-auto">
       {/* Left Panel */}
@@ -168,6 +191,29 @@ const RideYourLocation = () => {
             <div className="text-sm text-gray-500">{fareInfo.duration} min</div>
           </div>
         )}
+      </div>
+
+      <div className='flex sm:flex-col md:flex-row flex-wrap items-center md:justify-center lg:justify-between justify-between gap-3 sm:gap-5 w-full pt-5 px-5 block sm:hidden '>
+        {
+          CardImage.map((item, index) => {
+            return (
+              <div key={index} className={`p-5 w-25 sm:h-40 sm:w-90 md:w-85 xl:w-92 bg-gray-100 sm:p-4 flex flex-col sm:flex-row justify-between rounded-[10px]`}>
+                <div className="hidden sm:flex flex-col gap-6">
+                  <div className='flex flex-col gap-2'>
+                    <div className='font-semibold text-base'>{item.Heading}</div>
+                    <div className='font-light text-xs'>{item.Description}</div>
+                  </div>
+                  <button className='bg-white rounded-full px-1 py-2 w-18 font-medium text-sm'>Details</button>
+                </div>
+                <div className='h-15 w-15 sm:h-30 sm:w-48'>
+                  <img className='object-contain h-full w-full' src={item.image} />
+                </div>
+                <div className='font-semibold text-base sm:hidden w-full text-center'>{item.Heading}</div>
+              </div>
+            )
+          })
+        }
+
       </div>
 
     </div>

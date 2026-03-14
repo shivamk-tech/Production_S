@@ -893,8 +893,6 @@ async function roleBasedAuth(req, res) {
   }
 }
 
-
-
 module.exports = {
   sendEmailOtp,
   verifyEmailOtp,

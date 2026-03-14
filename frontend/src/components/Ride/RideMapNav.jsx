@@ -4,7 +4,7 @@ import car from '../../assets/car.png'
 import key from '../../assets/key.png'
 import { useAuth } from '../../context/AuthContext'
 import eat from '../../assets/eat.png'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -13,6 +13,13 @@ const RideMapNav = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('Ride');
+
+  const tabs = [
+    { name: 'Ride', icon: car },
+    { name: 'Rent', icon: key },
+    { name: 'Eat', icon: eat }
+  ];
 
   const Sidebar = () => (
     <AnimatePresence>
@@ -34,41 +41,29 @@ const RideMapNav = () => {
           >
             <div className='flex flex-col h-full'>
               <div className='flex items-center justify-between p-4 border-b'>
-                <div className='w-20 h-10 flex items-center justify-center overflow-hidden'>
-                  <img className='object-contain h-full' src={wlogo} alt="" />
-                </div>
+                <Link to="/">
+                  <div className=' h-8 overflow-hidden w-24 shrink-0 flex items-center justify-start'>
+                    <img className='h-full w-full object-contain object-left' src={wlogo} alt="logo" />
+                  </div>
+                </Link>
                 <button onClick={() => setIsSidebarOpen(false)} className='p-2 hover:bg-gray-100 rounded-full'>
                   <X size={24} />
                 </button>
               </div>
               <div className='flex flex-col p-4 gap-2'>
-                <motion.div 
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                  className='flex items-center gap-4 p-3 hover:bg-gray-100 rounded-xl cursor-pointer transition-colors'
-                >
-                  <div className='w-8'><img className='object-cover w-full' src={car} alt="" /></div>
-                  <span className='font-medium text-lg'>Ride</span>
-                </motion.div>
-                <motion.div 
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className='flex items-center gap-4 p-3 hover:bg-gray-100 rounded-xl cursor-pointer transition-colors'
-                >
-                  <div className='w-8'><img className='object-cover w-full' src={key} alt="" /></div>
-                  <span className='font-medium text-lg'>Rent</span>
-                </motion.div>
-                <motion.div 
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className='flex items-center gap-4 p-3 hover:bg-gray-100 rounded-xl cursor-pointer transition-colors'
-                >
-                  <div className='w-8'><img className='object-cover w-full' src={eat} alt="" /></div>
-                  <span className='font-medium text-lg'>Eat</span>
-                </motion.div>
+                {tabs.map((tab, index) => (
+                  <motion.div 
+                    key={tab.name}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 * (index + 1) }}
+                    onClick={() => { setActiveTab(tab.name); setIsSidebarOpen(false); }}
+                    className={`flex items-center gap-4 p-3 hover:bg-gray-100 rounded-xl cursor-pointer transition-colors ${activeTab === tab.name ? 'bg-gray-100' : ''}`}
+                  >
+                    <div className='w-8'><img className='object-cover w-full' src={tab.icon} alt="" /></div>
+                    <span className='font-medium text-lg'>{tab.name}</span>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -79,41 +74,39 @@ const RideMapNav = () => {
 
   if(user){
     return (
-    <div className='h-16 border-b-4 border-gray-200 fixed left-0 top-0 z-[1000] w-full overflow-hidden flex items-center px-4 lg:px-16 justify-between bg-white'>
+    <div className='h-16 border-b-4 border-gray-200 fixed left-0 top-0 z-[1000] w-full flex items-center px-4 lg:px-16 justify-between bg-white'>
       <Sidebar />
       {/* left section */}
-      <div className='flex items-center gap-4 lg:gap-20'>
+      <div className='flex items-center gap-4'>
         <button onClick={() => setIsSidebarOpen(true)} className='lg:hidden p-2 hover:bg-gray-100 rounded-full'>
           <Menu size={24} />
         </button>
-        <div className={isSidebarOpen === true ?'h-0 w-0':`w-20`}>
-          <img className='object-contain h-full' src={wlogo} alt="" />
-        </div>
-        <div className='hidden lg:flex gap-3'>
-          <div className='flex items-center'>
-            <div className='w-8 lg:w-10'><img className='object-cover w-full h-full' src={car} alt="" /></div>
-            <span className='text-xs lg:text-sm font-medium'>
-              Ride
-            </span>
+        <Link to="/">
+          <div className={`h-8 lg:h-14 w-24 lg:w-40 shrink-0 items-center justify-start overflow-hidden ${isSidebarOpen ? 'hidden lg:flex' : 'flex'}`}>
+            <img className='max-h-full max-w-full object-contain object-left' src={wlogo} alt="logo" />
           </div>
-          <div className='flex items-center'>
-            <div className='w-8 lg:w-10'><img className='object-cover w-full h-full' src={key} alt="" /></div>
-            <span className='text-xs lg:text-sm font-medium'>
-              Rent
-            </span>
+        </Link>
+      </div>
+      {/* center section */}
+      <div className='hidden lg:flex items-center gap-8 absolute left-1/2 top-0 h-full -translate-x-1/2'>
+        {tabs.map((tab) => (
+          <div 
+            key={tab.name} 
+            onClick={() => setActiveTab(tab.name)}
+            className={`relative h-full flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-2 transition-colors ${activeTab === tab.name ? 'text-black' : 'text-gray-600'}`}
+          >
+            <div className='w-8 lg:w-10'><img className='object-cover w-full h-full' src={tab.icon} alt="" /></div>
+            <span className='text-xs lg:text-sm font-medium'>{tab.name}</span>
+            {activeTab === tab.name && (
+              <motion.div layoutId="nav-indicator" className="absolute -bottom-1 left-0 right-0 h-1 bg-black" />
+            )}
           </div>
-          <div className='flex items-center'>
-            <div className='w-8 lg:w-10'><img className='object-cover w-full h-full' src={eat} alt="" /></div>
-            <span className='text-xs lg:text-sm font-medium'>
-              Eat
-            </span>
-          </div>
-        </div>
+        ))}
       </div>
       {/* right section */}
       <div>
         <div className='flex gap-2'>
-          <button className='flex gap-1 py-2 px-3 rounded-full items-center bg-black text-white cursor-pointer text-sm font-medium'>
+          <button onClick={() => navigate('/me')} className='flex gap-1 py-2 px-3 rounded-full items-center bg-black text-white cursor-pointer text-sm font-medium'>
             {user.firstName}
           </button>
         </div>
@@ -123,36 +116,34 @@ const RideMapNav = () => {
   }
 
   return (
-    <div className='lg:h-16  border-b-4 border-gray-200 fixed left-0 top-0 z-[1000] w-full overflow-hidden flex items-center px-4 lg:px-16 justify-between bg-white'>
+    <div className='h-16 border-b-4 border-gray-200 fixed left-0 top-0 z-[1000] w-full flex items-center px-4 lg:px-16 justify-between bg-white'>
       <Sidebar />
       {/* left section */}
-      <div className='flex items-center gap-4 lg:gap-20'>
+      <div className='flex items-center gap-4 overflow-hidden h-15'>
         <button onClick={() => setIsSidebarOpen(true)} className='lg:hidden p-2 hover:bg-gray-100 rounded-full'>
           <Menu size={24} />
         </button>
-        <div className='h-12 lg:block hidden'>
-          <img className='object-contain h-full lg:block hidden' src={wlogo} alt="" />
-        </div>
-        <div className='hidden lg:flex gap-3'>
-          <div className='flex items-center'>
-            <div className='w-8 lg:w-10'><img className='object-cover w-full h-full' src={car} alt="" /></div>
-            <span className='text-xs lg:text-sm font-medium'>
-              Ride
-            </span>
+        <Link to="/">
+          <div className={`h-8 w-24 lg:h-20 lg:w-24 overflow-hidden shrink-0 items-center justify-start lg:flex hidden`}>
+            <img className='max-h-full max-w-full object-contain object-left' src={wlogo} alt="logo" />
           </div>
-          <div className='flex items-center'>
-            <div className='w-8 lg:w-10'><img className='object-cover w-full h-full' src={key} alt="" /></div>
-            <span className='text-xs lg:text-sm font-medium'>
-              Rent
-            </span>
+        </Link>
+      </div>
+      {/* center section */}
+      <div className='hidden lg:flex items-center gap-8 absolute left-1/2 top-0 h-full -translate-x-1/2'>
+        {tabs.map((tab) => (
+          <div 
+            key={tab.name} 
+            onClick={() => setActiveTab(tab.name)}
+            className={`relative h-full flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-2 transition-colors ${activeTab === tab.name ? 'text-black' : 'text-gray-600'}`}
+          >
+            <div className='w-8 lg:w-10'><img className='object-cover w-full h-full' src={tab.icon} alt="" /></div>
+            <span className='text-xs lg:text-sm font-medium'>{tab.name}</span>
+            {activeTab === tab.name && (
+              <motion.div layoutId="nav-indicator" className="absolute -bottom-1 left-0 right-0 h-1 bg-black" />
+            )}
           </div>
-          <div className='flex items-center'>
-            <div className='w-8 lg:w-10'><img className='object-cover w-full h-full' src={eat} alt="" /></div>
-            <span className='text-xs lg:text-sm font-medium'>
-              Eat
-            </span>
-          </div>
-        </div>
+        ))}
       </div>
       {/* right section */}
       <div>

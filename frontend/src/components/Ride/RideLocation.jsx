@@ -52,17 +52,33 @@ const RideLocation = ({
 
     try {
       const res = await axios.get(
-        "https://nominatim.openstreetmap.org/search",
+        "https://photon.komoot.io/api/",
         {
           params: {
             q: query,
-            format: "json",
-            countrycodes: "in",
+            limit: 15, // Increased limit to ensure we have enough results after filtering
+            bbox: "68.1,6.5,97.4,35.5", // Approximate bounding box for India
           },
         }
       );
 
-      setter(res.data);
+      if (res.data && res.data.features) {
+        const formattedSuggestions = res.data.features
+          .filter((f) => f.properties.countrycode?.toUpperCase() === "IN") // Strict India filter
+          .slice(0, 5) // Return only the top 5 results
+          .map((f) => {
+            const props = f.properties;
+            const parts = [props.name, props.street, props.city, props.state, props.country].filter(Boolean);
+            return {
+              display_name: Array.from(new Set(parts)).join(", "),
+              lat: f.geometry.coordinates[1],
+              lon: f.geometry.coordinates[0],
+            };
+          });
+        setter(formattedSuggestions);
+      } else {
+        setter([]);
+      }
     } catch (err) {
       console.error(err);
     }
