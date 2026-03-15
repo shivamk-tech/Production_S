@@ -88,7 +88,7 @@ const DriversRideDashboard = ({ ride, setRide }) => {
         L.latLng(dropLat, dropLng),
       ]);
       return;
-      
+
     }
 
     if (routingControlRef.current) {
@@ -97,6 +97,8 @@ const DriversRideDashboard = ({ ride, setRide }) => {
       } else {
         mapRef.current.removeControl(routingControlRef.current);
       }
+
+      
     }
 
     const driverToPickup = L.Routing.control({
