@@ -98,8 +98,11 @@ const DriversRideDashboard = ({ ride, setRide }) => {
         mapRef.current.removeControl(routingControlRef.current);
       }
 
-      
+
     }
+
+
+    
 
     const driverToPickup = L.Routing.control({
       waypoints: [
