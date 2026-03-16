@@ -83,18 +83,19 @@ const RideLocation = ({
       async (position) => {
         const { latitude, longitude } = position.coords;
         try {
-          // Reverse geocode to get the address name using Photon API
-          const res = await axios.get("https://photon.komoot.io/reverse", {
+          // Reverse geocode to get the address name using our backend proxy
+          const res = await axios.get("http://localhost:3003/api/maps/reverse-geocode", {
             params: {
               lon: longitude,
               lat: latitude,
             },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
           });
 
-          if (res.data && res.data.features && res.data.features.length > 0) {
-            const props = res.data.features[0].properties;
-            const parts = [props.name, props.street, props.city, props.state, props.country].filter(Boolean);
-            const address = Array.from(new Set(parts)).join(", ");
+          if (res.data && res.data.display_name) {
+            const address = res.data.display_name;
             
             setPickup({
               name: address, // Set the display name

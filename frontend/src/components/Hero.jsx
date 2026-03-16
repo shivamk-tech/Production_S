@@ -39,17 +39,23 @@ const Hero = () => {
         async (position) => {
           const { latitude, longitude } = position.coords;
           try {
-            const res = await axios.get("https://photon.komoot.io/reverse", {
+            const res = await axios.get("http://localhost:3003/api/maps/reverse-geocode", {
               params: { lon: longitude, lat: latitude },
+              headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
-            if (res.data?.features?.length > 0) {
-              const props = res.data.features[0].properties;
-              const address = Array.from(new Set([props.name, props.street, props.city].filter(Boolean))).join(", ");
+            
+            if (res.data?.display_name) {
+              const address = res.data.display_name;
               setPickup({ name: address, lat: latitude, lng: longitude });
               setPickupQuery(address);
+            } else {
+              setPickup({ name: "Current Location", lat: latitude, lng: longitude });
+              setPickupQuery("Current Location");
             }
           } catch (err) {
             console.error(err);
+            setPickup({ name: "Current Location", lat: latitude, lng: longitude });
+            setPickupQuery("Current Location");
           } finally {
             setIsLocating(false);
             setActiveField(null);
@@ -61,22 +67,43 @@ const Hero = () => {
     };
 
     const fetchSuggestions = async (query, setter) => {
-      if (query.length < 3) return setter([]);
-      try {
-        const res = await axios.get(`http://localhost:3003/api/maps/suggestions`, {
-          params: { input: query }
-        });
-        if (Array.isArray(res.data)) {
-          setter(res.data.map(f => ({
-            display_name: f.display_name,
-            lat: parseFloat(f.lat),
-            lon: parseFloat(f.lon),
-          })));
+      if (query.length < 3) {
+        if (activeField === "pickup") {
+          setter([{ display_name: "Current Location", isCurrentLocation: true }]);
         } else {
           setter([]);
         }
+        return;
+      }
+
+      try {
+        const res = await axios.get(`http://localhost:3003/api/maps/suggestions`, {
+          params: { input: query },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        const currentLocationOption = activeField === "pickup" 
+          ? [{ display_name: "Current Location", isCurrentLocation: true }] 
+          : [];
+
+        if (Array.isArray(res.data)) {
+          const apiSuggestions = res.data.map((f) => ({
+            display_name: f.display_name,
+            lat: parseFloat(f.lat),
+            lon: parseFloat(f.lon),
+          }));
+          setter([...currentLocationOption, ...apiSuggestions]);
+        } else {
+          setter(currentLocationOption);
+        }
       } catch (err) {
-        setter([]);
+        console.error("Suggestions fetch error:", err);
+        const fallbackOption = activeField === "pickup" 
+          ? [{ display_name: "Current Location", isCurrentLocation: true }] 
+          : [];
+        setter(fallbackOption);
       }
     };
 
@@ -212,9 +239,9 @@ const Hero = () => {
                     </div>
                     {/* Location */}
                     <div className='flex flex-col gap-4 relative lg:w-full z-20'>
-                        <div className='absolute z-[1] flex flex-col items-center top-[18px] left-5'>
+                        <div className='absolute z-[1] flex flex-col items-center top-[22px] left-5'>
                             <div className='border-6 rounded-full h-4 w-4'></div>
-                            <div className='w-1 h-14 bg-black'></div>
+                            <div className='w-1 h-[44px] bg-black'></div>
                             <div className='h-4 w-4 border-5'></div>
                         </div>
 
@@ -244,14 +271,22 @@ const Hero = () => {
                                   <li
                                     key={i}
                                     className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-none text-sm"
-                                    onClick={() => {
-                                      setPickup({ name: s.display_name, lat: s.lat, lng: s.lon });
-                                      setPickupQuery(s.display_name);
+                                    onMouseDown={(e) => {
+                                      e.preventDefault(); // Prevent input from losing focus
+                                      if (s.isCurrentLocation) {
+                                        getCurrentLocation();
+                                      } else {
+                                        setPickup({ name: s.display_name, lat: s.lat, lng: s.lon });
+                                        setPickupQuery(s.display_name);
+                                      }
                                       setPickupSuggestions([]);
                                       setActiveField(null);
                                     }}
                                   >
-                                    {s.display_name}
+                                    <div className="flex items-center gap-2">
+                                      {s.isCurrentLocation ? <Navigation size={16} className="text-blue-500" /> : <MapPin size={16} className="text-gray-500" />}
+                                      <span className={s.isCurrentLocation ? "text-blue-500 font-medium" : ""}>{s.display_name}</span>
+                                    </div>
                                   </li>
                                 ))}
                               </ul>
@@ -274,14 +309,22 @@ const Hero = () => {
                                   <li
                                     key={i}
                                     className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-none text-sm"
-                                    onClick={() => {
-                                      setDropoff({ name: s.display_name, lat: s.lat, lng: s.lon });
-                                      setDropoffQuery(s.display_name);
+                                    onMouseDown={(e) => {
+                                      e.preventDefault(); // Prevent input from losing focus
+                                      if (s.isCurrentLocation) {
+                                        getCurrentLocation();
+                                      } else {
+                                        setDropoff({ name: s.display_name, lat: s.lat, lng: s.lon });
+                                        setDropoffQuery(s.display_name);
+                                      }
                                       setDropoffSuggestions([]);
                                       setActiveField(null);
                                     }}
                                   >
-                                    {s.display_name}
+                                    <div className="flex items-center gap-2">
+                                      {s.isCurrentLocation ? <Navigation size={16} className="text-blue-500" /> : <MapPin size={16} className="text-gray-500" />}
+                                      <span className={s.isCurrentLocation ? "text-blue-500 font-medium" : ""}>{s.display_name}</span>
+                                    </div>
                                   </li>
                                 ))}
                               </ul>

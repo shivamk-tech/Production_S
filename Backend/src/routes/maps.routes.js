@@ -4,5 +4,6 @@ const authMiddleware = require('../middleware/auth.middleware');
 const mapsController = require('../controllers/maps.controller');
 
 router.get('/suggestions', authMiddleware, mapsController.getSuggestions);
+router.get('/reverse-geocode', authMiddleware, mapsController.getReverseGeocode);
 
 module.exports = router;
