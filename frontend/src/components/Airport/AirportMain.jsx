@@ -6,20 +6,18 @@ import AirportQuestion from './AirportQuestion'
 import AirportFinder from './AirportFinder'
 import Footer from '../Footer'
 
-
 const AirportMain = () => {
     return (
         <div>
-            <div className='px-40 pt-16'>
+            <div className='px-5 lg:px-40 pt-16'>
                 <Navbar />
                 <AirportHero />
                 <AirportReserve />
                 <AirportQuestion />
                 <AirportFinder />
-
             </div>
             <div>
-                <Footer/>
+                <Footer />
             </div>
         </div>
     )

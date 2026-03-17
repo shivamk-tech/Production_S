@@ -48,13 +48,12 @@ const Navbar = () => {
               <span>About</span> <ChevronDown className={`${isAboutOpen ? "rotate-180" : ""}`} size={15} strokeWidth={4} />
             </button>
             <div className={`absolute top-12.5  flex flex-col justify-between left-0 bg-white rounded-b-[8px] text-black w-48 z-50 transition-all duration-100  ${isAboutOpen ? "h-103 pt-1 pb-1.5 shadow-lg opacity-100 visible" : "h-0 shadow-none opacity-0 invisible"}`}>
-              <a href="" className="block px-4 py-2 text-gray-500 hover:bg-gray-100 font-light">
+              <Link to="/about" className="block px-4 py-2 text-gray-500 hover:bg-gray-100 font-light">
                 About us
-              </a>
-              <a href="" className="block px-4 py-2 text-gray-500 hover:bg-gray-100 font-light">
+              </Link>
+              <Link to="/offerings" className="block px-4 py-2 text-gray-500 hover:bg-gray-100 font-light">
                 Our offering
-
-              </a>
+              </Link>
               <a href="" className="block px-4 py-2 text-gray-500 hover:bg-gray-100 font-light">
                 How Uber works
               </a>
@@ -76,7 +75,7 @@ const Navbar = () => {
                   onMouseEnter={() => setIsExploreOpen(true)}
                   onMouseLeave={() => setIsExploreOpen(false)}
                 >
-                  <a href="" className="block px-4 py-2 flex justify-between  text-gray-500 hover:bg-gray-100 font-light"
+                  <div className="block px-4 py-2 flex justify-between text-gray-500 hover:bg-gray-100 font-light cursor-pointer"
                     onMouseEnter={() => setIsAirportOpen(true)}
                     onMouseLeave={() => setIsAirportOpen(false)}>
                     Airports <ChevronRight size={17} />
@@ -113,8 +112,8 @@ const Navbar = () => {
                         Jaipur Airport
                       </a>
                     </div>
-                  </a>
-                  <a href="" className="block px-4 py-2 flex justify-between text-gray-500 hover:bg-gray-100 font-light"
+                  </div>
+                  <div className="block px-4 py-2 flex justify-between text-gray-500 hover:bg-gray-100 font-light cursor-pointer"
                     onMouseEnter={() => setIsCourierOpen(true)}
                     onMouseLeave={() => setIsCourierOpen(false)}
                   >
@@ -155,8 +154,8 @@ const Navbar = () => {
                         Courier services Lucknow
                       </a>
                     </div>
-                  </a>
-                  <a href="" className="block px-4 py-2 flex justify-between text-gray-500 hover:bg-gray-100 font-light"
+                  </div>
+                  <div className="block px-4 py-2 flex justify-between text-gray-500 hover:bg-gray-100 font-light cursor-pointer"
                     onMouseEnter={() => setIsIntercityOpen(true)}
                     onMouseLeave={() => setIsIntercityOpen(false)}
                   >
@@ -194,8 +193,8 @@ const Navbar = () => {
                         Mumbai to Pune
                       </a>
                     </div>
-                  </a>
-                  <a href="" className="block px-4 py-2 flex justify-between text-gray-500 hover:bg-gray-100 font-light"
+                  </div>
+                  <div className="block px-4 py-2 flex justify-between text-gray-500 hover:bg-gray-100 font-light cursor-pointer"
                     onMouseEnter={() => setIsPopularOpen(true)}
                     onMouseLeave={() => setIsPopularOpen(false)}
                   >
@@ -233,8 +232,8 @@ const Navbar = () => {
                         Lucknow to BakshiKa Talab
                       </a>
                     </div>
-                  </a>
-                  <a href="" className="block px-4 py-2 flex justify-between text-gray-500 hover:bg-gray-100 font-light"
+                  </div>
+                  <div className="block px-4 py-2 flex justify-between text-gray-500 hover:bg-gray-100 font-light cursor-pointer"
                     onMouseEnter={() => setIsTaxiOpen(true)}
                     onMouseLeave={() => setIsTaxiOpen(false)}
                   >
@@ -281,7 +280,7 @@ const Navbar = () => {
                       </a>
 
                     </div>
-                  </a>
+                  </div>
                 </div>
               </div>
 

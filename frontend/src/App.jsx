@@ -14,8 +14,9 @@ import { useEffect, useState } from "react";
 import { useAuth } from "./context/AuthContext";
 import AboutMe from "./components/AboutMe";
 import ProtectedRoute from "./components/ProtectedRoute";
-import DriversRideDashboard from "./components/Ride/DriversRideDashboard";
 import RideTrackingPage from "./components/Ride/RideTrackingPage";
+import AboutMain from "./components/AboutUs/AboutMain";
+import OffMain from "./components/Offerings/OffMain";
 
 const App = () => {
   const { loading } = useAuth();
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/business" element={<BusinessMain />} />
         <Route path="/exploreride" element={<ReqRideMain />} />
         <Route path="/airport" element={<AirportMain />} />
+        <Route path="/airports" element={<AirportMain />} />
         <Route path="/learnmore" element={<LearnMoreMain />} />
         <Route path="/see" element={<SeeMain />} />
         <Route path='/signup' element={<LoginMain />} />
@@ -44,6 +46,9 @@ const App = () => {
             <RideTrackingPage />
           </ProtectedRoute>
         } />
+        <Route path='/about' element={<AboutMain />} />
+        <Route path='/offerings' element={<OffMain />} />
+
       </Routes>
     </div>
   );

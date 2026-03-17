@@ -9,24 +9,17 @@ import AboutComeRe from './AboutComeRe.jsx'
 import Footer from '../Footer.jsx'
 
 const AboutMore = () => {
-  console.log("about")
-  console.log("about")
-  console.log("about")
-  console.log("about")
-  
- 
-  
-  
+
   return (
     <div>
-      <Navbar/>
-      <AboutHero/>
-      <AboutReImagine/>
-      <AboutCEOLetter/>
-      <AboutSus/>
-      <AboutCompany/>
-      <AboutComeRe/>
-      <Footer/>
+      <Navbar />
+      <AboutHero />
+      <AboutReImagine />
+      <AboutCEOLetter />
+      <AboutSus />
+      <AboutCompany />
+      <AboutComeRe />
+      <Footer />
     </div>
   )
 }

@@ -4,9 +4,10 @@ import { Instagram, Globe, MapPin } from 'lucide-react';
 import XLogo from './XLogo';
 import PlayStore from '../assets/PlayStore.svg';
 import AppleStore from '../assets/AppleStore.svg';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Footer = () => {
-    
+    const navigate = useNavigate();
     return (
         <div className='lg:h-230 w-full bg-black lg:px-40 px-7 pt-16  text-white flex flex-col gap-20 '>
             <div className='flex flex-col gap-5'>
@@ -24,10 +25,10 @@ const Footer = () => {
                     </div>
                     <div className='flex flex-col gap-4 font-normal text-sm'>
                         <div>
-                            <a href="">About us </a>
+                            <Link to="/about" className="hover:underline">About us </Link>
                         </div>
                         <div>
-                            <a href=""> Our offerings</a>
+                            <Link to="/offerings" className="hover:underline"> Our offerings</Link>
                         </div>
                         <div>
                             <a href="">Newsroom</a>
@@ -52,7 +53,7 @@ const Footer = () => {
                     </div>
                     <div className='flex flex-col gap-4 font-normal text-sm'>
                         <div>
-                            <a href="">Ride</a>
+                            <Link to="/ride" className="hover:underline">Ride</Link>
                         </div>
                         <div>
                             <a href="">Drive</a>
@@ -61,7 +62,7 @@ const Footer = () => {
                             <a href="">Eat</a>
                         </div>
                         <div>
-                            <a href="">Uber for Business</a>
+                            <Link to="/business" className="hover:underline">Uber for Business</Link>
                         </div>
                         <div>
                             <a href="">Uber Freight</a>
@@ -94,10 +95,10 @@ const Footer = () => {
                     </div>
                     <div className='flex flex-col gap-4 font-normal text-sm'>
                         <div>
-                            <a href="">Reserve</a>
+                            <Link to="/ride" className="hover:underline">Reserve</Link>
                         </div>
                         <div>
-                            <a href="">Airports</a>
+                            <Link to="/airport" className="hover:underline">Airports</Link>
                         </div>
                         <div>
                             <a href="">Cities</a>

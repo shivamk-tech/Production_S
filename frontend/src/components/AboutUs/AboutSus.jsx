@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import sus from '../../assets/sus.png'
 import rideandbeyond from '../../assets/rideandbeyond.png'
 import safety from '../../assets/safety.svg'
@@ -47,9 +48,9 @@ const AboutSus = () => {
                                     {item.button}
                                 </button>
                                 {item.button2 && (
-                                    <button className='border-b border-[#333333] pb-1 font-light text-[#333333] hover:opacity-70'>
+                                    <Link to="/offerings" className='border-b border-[#333333] pb-1 font-light text-[#333333] hover:opacity-70'>
                                         {item.button2}
-                                    </button>
+                                    </Link>
                                 )}
                             </div>
                         </div>

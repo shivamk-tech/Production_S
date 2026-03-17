@@ -4,7 +4,7 @@ import Line from '../Line'
 
 const AirportQuestion = () => {
   return (
-    <div className='pb-16 w-full h-auto lg:h-110 flex flex-col gap-13 px-5 '>
+    <div className='pb-16 w-full h-auto lg:h-110 flex flex-col gap-13'>
       <div className='text-4xl font-bold text-[#333333]'>
         Top questions about airport rides
       </div>
