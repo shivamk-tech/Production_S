@@ -42,6 +42,8 @@ const RidersRideDashboard = ({ ride, setRide }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [isConfirming, setIsConfirming] = useState(false);
 
+
+  
   const handleConfirmArrival = async () => {
     setIsConfirming(true);
     try {
