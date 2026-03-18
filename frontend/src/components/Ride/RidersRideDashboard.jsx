@@ -44,7 +44,9 @@ const RidersRideDashboard = ({ ride, setRide }) => {
 
 
 
+
   
+
 
   const handleConfirmArrival = async () => {
     setIsConfirming(true);
