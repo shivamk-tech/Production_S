@@ -14,7 +14,7 @@ const driverIcon = L.divIcon({
 console.log("hello")
 console.log("hello")
 console.log("hello")
-
+console.log("hello")
 
 console.log("hello")
 const pickupIcon = L.divIcon({
