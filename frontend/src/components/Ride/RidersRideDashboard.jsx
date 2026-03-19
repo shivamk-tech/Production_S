@@ -81,10 +81,6 @@ const RidersRideDashboard = ({ ride, setRide }) => {
     }
   }, [ride]);
 
-
-
-  
-
   useEffect(() => {
     socket.on("driver-location-update", (data) => {
       setDriverLocation(data.location);
