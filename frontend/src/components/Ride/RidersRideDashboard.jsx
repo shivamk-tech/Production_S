@@ -11,12 +11,7 @@ const driverIcon = L.divIcon({
   iconSize: [32, 32],
   iconAnchor: [16, 16],
 });
-console.log("hello")
-console.log("hello")
-console.log("hello")
-console.log("hello")
-console.log("hello")
-console.log("hello")
+console.log("helllo")
 const pickupIcon = L.divIcon({
   html: `<div style="background-color: white; border: 6px solid black; border-radius: 50%; width: 24px; height: 24px;"></div>`,
   className: '',
