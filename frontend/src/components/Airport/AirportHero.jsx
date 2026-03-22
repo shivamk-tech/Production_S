@@ -3,6 +3,7 @@ import { Navigation, MapPin, Tag, ChevronDown, Clock, Calendar, X, ChevronRight 
 import planelanding from "../../assets/planelanding.png";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import BASE_URL from "../../config/api";
 
 const debounce = (func, delay) => {
     let timeoutId;
@@ -40,9 +41,8 @@ const AirportHero = () => {
             async (position) => {
                 const { latitude, longitude } = position.coords;
                 try {
-                    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/maps/reverse-geocode`, {
-                        params: { lon: longitude, lat: latitude },
-                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                    const res = await axios.get(`${BASE_URL}/api/maps/reverse-geocode`, {
+                        params: { lon: longitude, lat: latitude }
                     });
 
                     if (res.data?.display_name) {
@@ -78,11 +78,8 @@ const AirportHero = () => {
         }
 
         try {
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/maps/suggestions`, {
-                params: { input: query },
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
+            const res = await axios.get(`${BASE_URL}/api/maps/suggestions`, {
+                params: { input: query }
             });
 
             const currentLocationOption = currentField === "pickup"

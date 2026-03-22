@@ -4,6 +4,7 @@ import L from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import socket from "../../socket/socket";
+import BASE_URL from "../../config/api";
 
 const driverIcon = L.divIcon({
   html: `<div style="background-color: black; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></div>`,
@@ -80,7 +81,7 @@ const DriversRideDashboard = ({ ride, setRide }) => {
     setOtpError(null);
     try {
       // Step 1: Verify OTP
-      const verifyRes = await fetch(`${import.meta.env.VITE_API_URL}/api/ride/${ride._id}/verify-otp`, {
+      const verifyRes = await fetch(`${BASE_URL}/api/ride/${ride._id}/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -97,7 +98,7 @@ const DriversRideDashboard = ({ ride, setRide }) => {
       setShowOtpPanel(false);
 
       // Step 2: Start the ride
-      const startRes = await fetch(`${import.meta.env.VITE_API_URL}/api/ride/${ride._id}/start`, {
+      const startRes = await fetch(`${BASE_URL}/api/ride/${ride._id}/start`, {
         method: 'PATCH',
         credentials: 'include'
       });
@@ -117,7 +118,7 @@ const DriversRideDashboard = ({ ride, setRide }) => {
   const handleRequestComplete = async () => {
     setIsRequestingComplete(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/ride/${ride._id}/request-complete`, {
+      const res = await fetch(`${BASE_URL}/api/ride/${ride._id}/request-complete`, {
         method: 'PATCH',
         credentials: 'include'
       });

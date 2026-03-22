@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import clock from '../../assets/clock.svg'
-import { ChevronDown, UserRound, X, Calendar, Clock, Car, Bike, MapPin, Square, Hourglass } from "lucide-react";
+import { ChevronDown, UserRound, X, Calendar, Clock, Car, Bike, MapPin, Square, Hourglass, Navigation } from "lucide-react";
 import socket from "../../socket/socket";
+import BASE_URL from "../../config/api";
 
 const debounce = (func, delay) => {
   let timeoutId;
@@ -84,13 +85,10 @@ const RideLocation = ({
         const { latitude, longitude } = position.coords;
         try {
           // Reverse geocode to get the address name using our backend proxy
-          const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/maps/reverse-geocode`, {
+          const res = await axios.get(`${BASE_URL}/api/maps/reverse-geocode`, {
             params: {
               lon: longitude,
               lat: latitude,
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
             }
           });
 
@@ -134,29 +132,25 @@ const RideLocation = ({
   };
 
   const fetchSuggestions = async (query, setter, currentField) => {
-    if (query.length < 3) {
-      if (currentField === "pickup") {
-        setter([{ display_name: "Current Location", isCurrentLocation: true }]);
-      } else {
-        setter([]);
-      }
+    const currentLocationOption = currentField === "pickup"
+      ? [{ display_name: "Current Location", isCurrentLocation: true }]
+      : [];
+
+    if (query.length < 2) {
+      setter(currentLocationOption);
       return;
     }
 
     try {
+      console.log('Fetching suggestions for:', query);
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/maps/suggestions`,
+        `${BASE_URL}/api/maps/suggestions`,
         {
-          params: { input: query },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+          params: { input: query }
         }
       );
 
-      const currentLocationOption = currentField === "pickup"
-        ? [{ display_name: "Current Location", isCurrentLocation: true }]
-        : [];
+      console.log('Suggestions response:', res.data);
 
       if (res.data && Array.isArray(res.data)) {
         const apiSuggestions = res.data.map((f) => ({
@@ -170,10 +164,7 @@ const RideLocation = ({
       }
     } catch (err) {
       console.error("Suggestions fetch error:", err);
-      const fallbackOption = currentField === "pickup"
-        ? [{ display_name: "Current Location", isCurrentLocation: true }]
-        : [];
-      setter(fallbackOption);
+      setter(currentLocationOption);
     }
   };
 
@@ -182,13 +173,21 @@ const RideLocation = ({
     fetchRef.current = fetchSuggestions;
   });
 
-  const debouncedFetch = useCallback(debounce((...args) => fetchRef.current(...args), 300), []);
+  const debouncedFetch = useCallback(debounce((...args) => fetchRef.current(...args), 200), []);
 
   useEffect(() => {
     if (activeField === "pickup") {
-      debouncedFetch(pickupQuery, setPickupSuggestions, activeField);
+      if (pickupQuery.length === 0) {
+        setPickupSuggestions([{ display_name: "Current Location", isCurrentLocation: true }]);
+      } else {
+        debouncedFetch(pickupQuery, setPickupSuggestions, activeField);
+      }
     } else if (activeField === "dropoff") {
-      debouncedFetch(dropoffQuery, setDropoffSuggestions, activeField);
+      if (dropoffQuery.length > 0) {
+        debouncedFetch(dropoffQuery, setDropoffSuggestions, activeField);
+      } else {
+        setDropoffSuggestions([]);
+      }
     }
   }, [pickupQuery, dropoffQuery, activeField, debouncedFetch]);
 
@@ -228,7 +227,7 @@ const RideLocation = ({
     try {
 
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/ride/create-rides`,
+        `${BASE_URL}/api/ride/create-rides`,
         rideData,
         {
           withCredentials: true
@@ -435,6 +434,7 @@ const RideLocation = ({
               value={pickupQuery}
               onChange={(e) => setPickupQuery(e.target.value)}
               onFocus={() => setActiveField("pickup")}
+              onBlur={() => setTimeout(() => setActiveField(null), 200)}
             />
 
             <button 
@@ -451,11 +451,11 @@ const RideLocation = ({
             </button>
 
             {activeField === "pickup" && pickupSuggestions.length > 0 && (
-              <ul className="absolute z-50 w-full bg-white border border-gray-200 rounded-lg shadow-xl mt-1 max-h-60 overflow-y-auto">
+              <ul className="absolute z-[100] w-full bg-white border border-gray-200 rounded-lg shadow-xl mt-1 max-h-60 overflow-y-auto">
                 {pickupSuggestions.map((s, i) => (
                   <li
                     key={i}
-                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-none text-sm"
+                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-none text-sm transition-colors"
                     onMouseDown={(e) => {
                       e.preventDefault();
                       if (s.isCurrentLocation) {
@@ -493,14 +493,15 @@ const RideLocation = ({
               value={dropoffQuery}
               onChange={(e) => setDropoffQuery(e.target.value)}
               onFocus={() => setActiveField("dropoff")}
+              onBlur={() => setTimeout(() => setActiveField(null), 200)}
             />
 
             {activeField === "dropoff" && dropoffSuggestions.length > 0 && (
-              <ul className="absolute z-50 w-full bg-white border border-gray-200 rounded-lg shadow-xl mt-1 max-h-60 overflow-y-auto">
+              <ul className="absolute z-[100] w-full bg-white border border-gray-200 rounded-lg shadow-xl mt-1 max-h-60 overflow-y-auto">
                 {dropoffSuggestions.map((s, i) => (
                   <li
                     key={i}
-                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-none text-sm"
+                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-none text-sm transition-colors"
                     onMouseDown={(e) => {
                       e.preventDefault();
                       if (s.isCurrentLocation) {

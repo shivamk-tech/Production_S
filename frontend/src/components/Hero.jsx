@@ -3,6 +3,7 @@ import { Navigation, ChevronDown, MapPin, Tag, Calendar, Clock, X } from 'lucide
 import Page from "../assets/page.png";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import BASE_URL from "../config/api";
 
 const debounce = (func, delay) => {
     let timeoutId;
@@ -38,9 +39,8 @@ const Hero = () => {
             async (position) => {
                 const { latitude, longitude } = position.coords;
                 try {
-                    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/maps/reverse-geocode`, {
-                        params: { lon: longitude, lat: latitude },
-                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                    const res = await axios.get(`${BASE_URL}/api/maps/reverse-geocode`, {
+                        params: { lon: longitude, lat: latitude }
                     });
 
                     if (res.data?.display_name) {
@@ -76,11 +76,8 @@ const Hero = () => {
         }
 
         try {
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/maps/suggestions`, {
-                params: { input: query },
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
+            const res = await axios.get(`${BASE_URL}/api/maps/suggestions`, {
+                params: { input: query }
             });
 
             const currentLocationOption = currentField === "pickup"

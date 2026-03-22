@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import RidersRideDashboard from "./RidersRideDashboard";
+import BASE_URL from "../../config/api";
 
 const RideTrackingPage = () => {
   const { rideId } = useParams();
@@ -17,7 +18,7 @@ const RideTrackingPage = () => {
       try {
         // Poll the rider's accepted rides to find this specific ride
         const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/ride/accepted-rides-rider`,
+          `${BASE_URL}/api/ride/accepted-rides-rider`,
           { withCredentials: true }
         );
         const found = res.data.ride?.find((r) => r._id === rideId);

@@ -9,6 +9,7 @@ import socket from "../../socket/socket"
 import { Navigate } from 'react-router-dom'
 import DriversRideDashboard from './DriversRideDashboard'
 import RidersRideDashboard from './RidersRideDashboard'
+import BASE_URL from '../../config/api'
 
 const RideMain = () => {
 
@@ -20,11 +21,16 @@ const RideMain = () => {
 
   useEffect(() => {
     const fetchRides = async () => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/ride/pending-rides`,
-        { withCredentials: true }
-      )
-      setRides(res.data.rides)
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/api/ride/pending-rides`,
+          { withCredentials: true }
+        )
+        setRides(res.data.rides || [])
+      } catch (err) {
+        console.log(err.message)
+        setRides([])
+      }
     }
     fetchRides()
     fetchActiveRidesOfDriver()
@@ -36,7 +42,7 @@ const RideMain = () => {
     try {
 
       const res = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/api/ride/${rideId}/accept`,
+        `${BASE_URL}/api/ride/${rideId}/accept`,
         {},
         { withCredentials: true }
       )
@@ -59,10 +65,10 @@ const RideMain = () => {
   const fetchActiveRidesOfDriver = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/ride/accepted-rides`,
+        `${BASE_URL}/api/ride/accepted-rides`,
         { withCredentials: true }
       )
-      const ride = res.data.ride[0]
+      const ride = res.data.ride?.[0]
       setActiveRide(ride)
       if (ride) {
         console.log("Joining socket room:", ride._id)
@@ -77,10 +83,10 @@ const RideMain = () => {
   const fetchActiveRidesOfRider = async () =>{
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/ride/accepted-rides-rider`,
+        `${BASE_URL}/api/ride/accepted-rides-rider`,
         { withCredentials: true }
       )
-      const ride = res.data.ride[0]
+      const ride = res.data.ride?.[0]
       setActiveRidesOfRider(ride)
       if (ride) {
         console.log("Joining socket room:", ride._id)

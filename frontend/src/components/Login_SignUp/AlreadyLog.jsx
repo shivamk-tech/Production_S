@@ -1,11 +1,12 @@
-// AlreadyLog.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import BASE_URL from '../../config/api';
+import { useAuth } from '../../context/AuthContext';
 
 const AlreadyLog = () => {
+    const { setUser } = useAuth();
     const [email, setEmail] = useState('');
     const [Error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -85,9 +86,13 @@ const AlreadyLog = () => {
                 { tempToken, otp: Otp },
                 { withCredentials: true }
             )
-            // Assuming successful login returns necessary data or sets cookies
-            navigate('/');
+            
+            // Fetch user data after successful login
+            const userRes = await axios.get(`${BASE_URL}/api/auth/me`, { withCredentials: true });
+            setUser(userRes.data.user || userRes.data);
+            
             console.log(res.data.message)
+            navigate('/');
         }
         catch (err) {
             setError(handleError(err))
@@ -219,7 +224,7 @@ const AlreadyLog = () => {
                 <div className={`w-full flex-shrink-0 flex flex-col items-center justify-center px-5 sm:px-6 transition-opacity duration-500 ${page === 2 ? 'opacity-100' : 'opacity-0'}`}>
                     <div className="w-full max-w-md flex flex-col gap-2 items-center pt-8 pb-16">
                         <h2 className="text-3xl sm:text-4xl font-bold text-center text-black mb-3">
-                            Enter the 4-digit code
+                            Enter the 6-digit code
                         </h2>
                         <p className="text-center text-gray-600 text-lg mb-8">
                             Sent to {email}
