@@ -1,3 +1,4 @@
+import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import logo from "../assets/logo.svg";
 
@@ -20,7 +21,7 @@ const DoMore2 = () => {
                     </div>
 
                     <div className='flex-shrink-0'>
-                        <ArrowRight className='transition-transfrom duration-300 ease-in group-hover:translate-x-4 m-0' size={25} />
+                        <ArrowRight className='transition-transform duration-300 ease-in group-hover:translate-x-4 m-0' size={25} />
                     </div>
                 </div>
             </div>

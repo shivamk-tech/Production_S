@@ -16,7 +16,7 @@ const Buisness = () => {
               </div>
               <div className='pl-10'>
                 <ul className='flex flex-col gap-6 list-disc'>
-                  <li><u className='underline underline-offset-3'>Buissness travel</u></li>
+                  <li><u className='underline underline-offset-3'>Business travel</u></li>
                   <li><u className='underline underline-offset-3'>Courtesy rides</u></li>
                   <li><u className='underline underline-offset-3'>Meal programs</u></li>
                   <li><u className='underline underline-offset-3'>Item delivery</u></li>
@@ -38,4 +38,3 @@ const Buisness = () => {
 }
 
 export default Buisness
-
