@@ -9,8 +9,6 @@ import AirportMain from "./components/Airport/AirportMain";
 import SeeMain from "./components/SeeTerms/SeeMain";
 import LoginMain from "./components/Login_SignUp/LoginMain";
 import AlreadyMain from "./components/Login_SignUp/AlreadyMain";
-import { useScroll } from "framer-motion";
-import { useEffect, useState } from "react";
 import { useAuth } from "./context/AuthContext";
 import AboutMe from "./components/AboutMe";
 import ProtectedRoute from "./components/ProtectedRoute";
