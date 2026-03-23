@@ -4,9 +4,9 @@ import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import RideLocation from "./RideLocation";
 import SuggCards from "../SuggCards";
-import Card1 from "../../assets/card1.png"
-import Card2 from "../../assets/card2.png"
-import Card3 from "../../assets/card3.png"
+import Card1 from "../../assets/Card1.png"
+import Card2 from "../../assets/Card2.png"
+import Card3 from "../../assets/Card3.png"
 
 const pickupIcon = L.icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/149/149060.png", // Replace with your pickup icon path

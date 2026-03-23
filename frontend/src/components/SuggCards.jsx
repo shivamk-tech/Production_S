@@ -1,10 +1,10 @@
 import React from 'react'
-import Card1 from '../assets/card1.png'
-import Card2 from '../assets/card2.png'
-import Card3 from '../assets/card3.png'
-import Card4 from '../assets/card4.png'
-import Card5 from '../assets/card5.png'
-import Card6 from '../assets/card6.png'
+import Card1 from '../assets/Card1.png'
+import Card2 from '../assets/Card2.png'
+import Card3 from '../assets/Card3.png'
+import Card4 from '../assets/Card4.png'
+import Card5 from '../assets/Card5.png'
+import Card6 from '../assets/Card6.png'
 
 const SuggCards = () => {
     console.log("CardSection");
