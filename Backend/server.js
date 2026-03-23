@@ -13,7 +13,14 @@ const FRONTEND_URL = process.env.FRONTEND_URL || "https://uber-zeta-henna.vercel
 
 const io = socketIO(server, {
   cors: {
-    origin: FRONTEND_URL,
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true)
+      if (origin.includes('vercel.app') || origin.includes('localhost')) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
     credentials: true
   }
 })
