@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import sus from '../../assets/sus.png'
+import sus from '../../assets/Sus.png'
 import rideandbeyond from '../../assets/rideandbeyond.png'
 import safety from '../../assets/safety.svg'
 
